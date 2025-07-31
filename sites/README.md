@@ -1,1 +1,1 @@
-# this file was used to make the sites directory using the github site
+# Hi there! to go to your site please add the project id to the url!
