@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide-react@0.94.0/dist/umd/lucide-react.js"></script> 
+  <link rel="stylesheet" href="styles.css">
+  <title>All About Cows</title>
+</head>
+<body>
+  <header class="bg-green-600 text-white p-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center">
+        <div class="icon-cow text-4xl mr-2"></div>
+        <h1 class="text-3xl font-bold">All About Cows</h1>
+      </div>
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="#what-are-cows" class="hover:underline">What are cows?</a></li>
+          <li><a href="#interesting-facts" class="hover:underline">Interesting facts</a></li>
+          <li><a href="#cow-breeds" class="hover:underline">Cow breeds</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto mt-8">
+    <section id="what-are-cows" class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">What are cows?</h2>
+      <p class="mb-4">Cows are large, domesticated mammals that belong to the bovine family. They are raised for their meat (beef), milk, and other dairy products. There are many different breeds of cows, each with their own unique characteristics.</p>
+      <img src="https://images.unsplash.com/photo-1571655638828-1025ea945625?w=800" alt="Herd of cows in a field" class="rounded-lg shadow-md">
+    </section>
+
+    <section id="interesting-facts" class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Interesting facts about cows</h2>
+      <ul class="list-disc list-inside">
+        <li>Cows are social animals and form close bonds with their herd mates</li>
+        <li>A cow's stomach has four compartments to help digest tough plant matter</li>
+        <li>Cows can see almost 360 degrees around them</li>
+        <li>The average cow produces 6-7 gallons of milk per day</li>
+      </ul>
+    </section>
+
+    <section id="cow-breeds">
+      <h2 class="text-2xl font-bold mb-4">Cow breeds</h2>
+      <p class="mb-4">Some popular cow breeds include:</p>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <li>
+          <img src="https://images.unsplash.com/photo-1620391205344-881a562ae8be?w=400" alt="Angus cow" class="rounded-lg shadow-md mb-2">
+          <h3 class="font-bold">Angus</h3>
+        </li>
+        <li>
+          <img src="https://images.unsplash.com/photo-1577175888742-f4f55ea6a8a5?w=400" alt="Holstein cow" class="rounded-lg shadow-md mb-2">
+          <h3 class="font-bold">Holstein</h3>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="bg-green-600 text-white text-center py-4 mt-8">
+    <p>&copy; 2023 All About Cows</p>
+  </footer>
+</body>
+</html>
