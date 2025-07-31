@@ -1,0 +1,30 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f4f4f4;
+}
+
+textarea {
+  width: 80%;
+  height: 200px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-family: monospace;
+}
+
+#jsonOutput {
+  width: 80%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  white-space: pre-wrap;
+  overflow: auto;
+  font-family: monospace;
+  color: #333;
+}
