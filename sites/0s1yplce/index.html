@@ -1,2 +1,55 @@
-<h1>hello</h1>
-<p>Kippen zijn lief!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Chicken Fanpage</title>
+</head>
+<body>
+  <header class="bg-yellow-400 text-white p-4 mb-10">
+    <div class="max-w-5xl mx-auto flex items-center">
+      <img src="https://unsplash.com/photos/gGC63oug3iY/download?force=true&w=640" alt="Chicken" class="w-20 h-20 rounded-full border-4 border-white mr-4">
+      <h1 class="text-4xl font-bold">Chicken Fanpage</h1>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto">
+    <section class="mb-20">
+      <h2 class="text-3xl mb-4">Why Chickens are Awesome</h2>
+      <ul class="text-xl ml-8 list-disc">
+        <li>They lay delicious eggs</li>
+        <li>They make funny clucking sounds</li>
+        <li>Baby chicks are adorable</li>
+        <li>They have pretty feathers</li>
+      </ul>
+    </section>
+    
+    <section class="grid md:grid-cols-3 gap-10 mb-20">
+      <div>
+        <img src="https://unsplash.com/photos/oO62CP-g1EA/download?force=true&w=640" alt="Hen" class="mb-4 rounded shadow-lg">
+        <h3 class="text-2xl mb-2">Hens</h3>
+        <p>Female chickens are called hens. They lay the eggs!</p>
+      </div>
+      <div>
+        <img src="https://unsplash.com/photos/fM0V0kXuPBk/download?force=true&w=640" alt="Rooster" class="mb-4 rounded shadow-lg">
+        <h3 class="text-2xl mb-2">Roosters</h3>
+        <p>Male chickens are called roosters. They protect the hens.</p>
+      </div>
+      <div>
+        <img src="https://unsplash.com/photos/Zjn4pRHNPWc/download?force=true&w=640" alt="Chicks" class="mb-4 rounded shadow-lg">
+        <h3 class="text-2xl mb-2">Chicks</h3>
+        <p>Baby chickens are called chicks. They are super cute and fluffy!</p>
+      </div>
+    </section>
+
+    <section class="text-center">
+      <h2 class="text-3xl mb-4">Chicken Facts</h2>
+      <div id="fact" class="text-2xl mb-4"></div>
+      <button id="factBtn" class="bg-yellow-400 text-white px-6 py-3 rounded-full text-lg shadow">Get New Fact</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
