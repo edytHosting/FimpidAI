@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Calculator</title>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+    <h1 class="text-4xl font-bold mb-4 flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+      Calculator
+    </h1>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <div class="mb-4">
+        <input type="text" id="result" class="w-full text-right text-2xl p-2 border border-gray-300 rounded" readonly>
+      </div>
+      <div class="grid grid-cols-4 gap-4">
+        <button class="btn" onclick="appendNumber('7')">7</button>
+        <button class="btn" onclick="appendNumber('8')">8</button>
+        <button class="btn" onclick="appendNumber('9')">9</button>
+        <button class="btn bg-blue-500 text-white" onclick="appendOperator('/')">÷</button>
+        <button class="btn" onclick="appendNumber('4')">4</button>
+        <button class="btn" onclick="appendNumber('5')">5</button>
+        <button class="btn" onclick="appendNumber('6')">6</button>
+        <button class="btn bg-blue-500 text-white" onclick="appendOperator('*')">×</button>
+        <button class="btn" onclick="appendNumber('1')">1</button>
+        <button class="btn" onclick="appendNumber('2')">2</button>
+        <button class="btn" onclick="appendNumber('3')">3</button>
+        <button class="btn bg-blue-500 text-white" onclick="appendOperator('-')">-</button>
+        <button class="btn" onclick="appendNumber('0')">0</button>
+        <button class="btn" onclick="appendNumber('.')">.</button>
+        <button class="btn bg-green-500 text-white" onclick="calculate()">=</button>
+        <button class="btn bg-blue-500 text-white" onclick="appendOperator('+')">+</button>
+      </div>
+      <button class="btn bg-red-500 text-white mt-4 w-full" onclick="clearResult()">Clear</button>
+    </div>
+  </div>
+  <div class="mt-8">
+    <img src="https://images.unsplash.com/photo-1587145820266-a5951ee6f620?w=800" alt="Calculator" class="w-full rounded-lg shadow-md">
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
