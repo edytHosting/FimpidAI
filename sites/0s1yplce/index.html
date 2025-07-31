@@ -3,53 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <title>Chicken Fanpage</title>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <title>All About Cows</title>
 </head>
 <body>
-  <header class="bg-yellow-400 text-white p-4 mb-10">
-    <div class="max-w-5xl mx-auto flex items-center">
-      <img src="https://unsplash.com/photos/gGC63oug3iY/download?force=true&w=640" alt="Chicken" class="w-20 h-20 rounded-full border-4 border-white mr-4">
-      <h1 class="text-4xl font-bold">Chicken Fanpage</h1>
-    </div>
+  <header class="bg-green-600 text-white p-4 flex items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM17 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M12 18a6 6 0 0 0-6 6h12a6 6 0 0 0-6-6z"/></svg>
+    <h1 class="text-2xl font-bold ml-2">Cows: Nature's Gentle Giants</h1>
   </header>
 
-  <main class="max-w-5xl mx-auto">
-    <section class="mb-20">
-      <h2 class="text-3xl mb-4">Why Chickens are Awesome</h2>
-      <ul class="text-xl ml-8 list-disc">
-        <li>They lay delicious eggs</li>
-        <li>They make funny clucking sounds</li>
-        <li>Baby chicks are adorable</li>
-        <li>They have pretty feathers</li>
-      </ul>
-    </section>
-    
-    <section class="grid md:grid-cols-3 gap-10 mb-20">
-      <div>
-        <img src="https://unsplash.com/photos/oO62CP-g1EA/download?force=true&w=640" alt="Hen" class="mb-4 rounded shadow-lg">
-        <h3 class="text-2xl mb-2">Hens</h3>
-        <p>Female chickens are called hens. They lay the eggs!</p>
-      </div>
-      <div>
-        <img src="https://unsplash.com/photos/fM0V0kXuPBk/download?force=true&w=640" alt="Rooster" class="mb-4 rounded shadow-lg">
-        <h3 class="text-2xl mb-2">Roosters</h3>
-        <p>Male chickens are called roosters. They protect the hens.</p>
-      </div>
-      <div>
-        <img src="https://unsplash.com/photos/Zjn4pRHNPWc/download?force=true&w=640" alt="Chicks" class="mb-4 rounded shadow-lg">
-        <h3 class="text-2xl mb-2">Chicks</h3>
-        <p>Baby chickens are called chicks. They are super cute and fluffy!</p>
-      </div>
+  <main class="container mx-auto my-8">
+    <section class="mb-8">
+      <img src="https://images.unsplash.com/photo-1564085352725-08da0272627d?w=1200" alt="Cows grazing in a field" class="w-full rounded shadow-lg">
+      <h2 class="text-3xl font-semibold mt-4">Welcome to the World of Cows</h2>
+      <p class="mt-2">Cows are fascinating creatures that have been domesticated for thousands of years. Learn more about these gentle giants and their important role in agriculture and society.</p>
     </section>
 
-    <section class="text-center">
-      <h2 class="text-3xl mb-4">Chicken Facts</h2>
-      <div id="fact" class="text-2xl mb-4"></div>
-      <button id="factBtn" class="bg-yellow-400 text-white px-6 py-3 rounded-full text-lg shadow">Get New Fact</button>
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <img src="https://images.unsplash.com/photo-1551606275-0ed4304f2222?w=600" alt="Cow breeds" class="w-full rounded shadow">
+        <h3 class="text-xl font-semibold mt-2">Cow Breeds</h3>
+        <p class="mt-1">Explore the diverse world of cow breeds, from the popular Holstein to the ancient Brahman.</p>
+      </div>
+      <div>
+        <img src="https://images.unsplash.com/photo-1593096603568-5f14940f9e24?w=600" alt="Dairy products" class="w-full rounded shadow">
+        <h3 class="text-xl font-semibold mt-2">Dairy Products</h3>
+        <p class="mt-1">Discover the various dairy products that come from cows, including milk, cheese, and yogurt.</p>
+      </div>
     </section>
   </main>
 
-  <script src="app.js"></script>
+  <footer class="bg-green-600 text-white p-4 text-center">
+    &copy; 2023 All About Cows. All rights reserved.
+  </footer>
 </body>
 </html>
