@@ -1,0 +1,1 @@
+//This JavaScript file is currently empty.  No JavaScript functionality is needed for this simple landing page.
