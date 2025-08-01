@@ -1,0 +1,1 @@
+// JavaScript can be added here later for interactive elements
