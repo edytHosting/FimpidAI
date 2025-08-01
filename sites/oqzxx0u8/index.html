@@ -5,22 +5,25 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="login-section">
-    <button id="login-button">Log In</button>
-  </div>
-  <div id="username-section" style="display: none;">
-    <input type="text" id="username-input" placeholder="Roblox Username">
-    <button id="next-button">Next</button>
-  </div>
-  <div id="verification-section" style="display: none;">
-    <p id="verification-code"></p>
-    <button id="verify-button">Verify</button>
-  </div>
-  <div id="success-section" style="display: none;">
-    <p id="success-message"></p>
-  </div>
-  <div id="error-section" style="display: none;">
-    <p>Try again</p>
+  <div id="container">
+    <div id="login-section">
+      <button id="login-button">Log In</button>
+    </div>
+    <div id="username-section" style="display: none;">
+      <input type="text" id="username-input" placeholder="Roblox Username">
+      <button id="next-button">Next</button>
+    </div>
+    <div id="verification-section" style="display: none;">
+      <p>Enter the following code into your Roblox bio:</p>
+      <p id="verification-code"></p>
+      <button id="verify-button">Verify</button>
+    </div>
+    <div id="success-section" style="display: none;">
+      <p id="success-message"></p>
+    </div>
+    <div id="error-section" style="display: none;">
+      <p>Try again</p>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
