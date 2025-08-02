@@ -1,7 +1,7 @@
 // Double Pendulum Simulation using p5.js
 
-let angle1 = PI/2;
-let angle2 = PI/2;
+let angle1 = 0;
+let angle2 = 0;
 let aVelocity1 = 0;
 let aVelocity2 = 0;
 let aAcceleration1 = 0;
@@ -20,11 +20,13 @@ let y2 = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  angle1 = PI / 2;
+  angle2 = PI / 2; 
 }
 
 function draw() {
   background(220);
-  translate(width/2, 100);
+  translate(width / 2, 100);
 
   // Calculate forces
   aAcceleration1 = (-gravity * (2 * mass1 + mass2) * sin(angle1) - mass2 * gravity * sin(angle1 - 2 * angle2) - 2 * sin(angle1 - angle2) * mass2 * (aVelocity2 * aVelocity2 * length2 + aVelocity1 * aVelocity1 * length1 * cos(angle1 - angle2)) ) / (length1 * (2 * mass1 + mass2 - mass2 * cos(2 * angle1 - 2 * angle2)));
