@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cluck & Learn: Your Guide to All Things Chicken!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        /* General Body & Typography */
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f8f8;
+}
+
+h1, h2, h3 {
+    font-family: 'Pacifico', cursive; /* A more playful font for headings */
+    color: #8B4513; /* SaddleBrown - warm, earthy */
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+p {
+    text-align: justify;
+    max-width: 800px;
+    margin: 0 auto 15px auto;
+}
+
+a {
+    color: #4CAF50; /* Green - fresh, natural */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #388E3C; /* Darker green on hover */
+}
+
+/* Header & Navigation */
+header {
+    background-color: #A0522D; /* Sienna - rustic, warm */
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+nav .logo {
+    display: flex;
+    align-items: center;
+}
+
+nav .logo img {
+    height: 50px;
+    margin-right: 10px;
+}
+
+nav .logo h1 {
+    margin: 0;
+    color: white;
+    font-size: 1.8em;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 25px;
+}
+
+nav ul li a {
+    color: white;
+    font-weight: bold;
+    padding: 5px 0;
+    position: relative;
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #FFD700; /* Gold - bright accent */
+    transition: width 0.3s ease-in-out;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* Mobile Navigation Toggle */
+.nav-toggle {
+    display: none; /* Hidden by default for desktop */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.hamburger {
+    display: block;
+    position: relative;
+    width: 30px;
+    height: 3px;
+    background: white;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 3px;
+    background: white;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.hamburger::before {
+    transform: translateY(-10px);
+}
+
+.hamburger::after {
+    transform: translateY(10px);
+}
+
+.nav-toggle.open .hamburger {
+    background: transparent;
+}
+
+.nav-toggle.open .hamburger::before {
+    transform: rotate(45deg);
+}
+
+.nav-toggle.open .hamburger::after {
+    transform: rotate(-45deg);
+}
+
+/* Hero Section */
+.hero-section {
+    background: url('images/hero-chicken-farm.jpg') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 150px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); /* Dark overlay for readability */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-content h2 {
+    font-family: 'Pacifico', cursive;
+    font-size: 3.5em;
+    margin-bottom: 20px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+.hero-content p {
+    font-size: 1.3em;
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+    color: rgba(255,255,255,0.9);
+}
+
+.btn-primary {
+    background-color: #FFD700; /* Gold */
+    color: #8B4513; /* SaddleBrown */
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.btn-primary:hover {
+    background-color: #FFA500; /* Orange - slightly darker gold */
+    transform: translateY(-3px);
+}
+
+/* Info Sections */
+.info-section {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.info-section h2 {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.info-section h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #4CAF50;
+    margin: 10px auto 0 auto;
+    border-radius: 2px;
+}
+
+/* Grid Container for Breeds */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 20px;
+}
+
+.breed-card {
+    background-color: #fdfdfd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.breed-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.breed-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+}
+
+.breed-card h3 {
+    font-family: 'Open Sans', sans-serif;
+    color: #A0522D;
+    margin: 15px 0 10px 0;
+}
+
+.breed-card p {
+    font-size: 0.95em;
+    padding: 0 15px 15px 15px;
+    color: #555;
+}
+
+.breed-card .learn-more-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.breed-card .learn-more-btn:hover {
+    background-color: #388E3C;
+}
+
+/* Accordion (Care Guide, FAQ) */
+.accordion-item {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 15px 20px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.accordion-header:hover, .accordion-header.active {
+    background-color: #e0e0e0;
+}
+
+.accordion-content {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: #fff;
+}
+
+.accordion-content.show {
+    max-height: 500px; /* Adjust as needed */
+    padding: 20px;
+}
+
+/* Flex Container for Housing Features */
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.housing-feature {
+    background-color: #fdfdfd;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    flex: 1 1 280px; /* Allows items to grow/shrink and wrap */
+    text-align: center;
+}
+
+.housing-feature h3 {
+    font-family: 'Open Sans', sans-serif;
+    color: #A0522D;
+    margin-top: 0;
+}
+
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.image-gallery img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Disease List (Health Section) */
+.disease-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.disease-item {
+    background-color: #ffe0b2; /* Light orange for warning/info */
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1 1 300px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.disease-item h3 {
+    color: #D35400; /* Darker orange */
+    margin-top: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.health-disclaimer {
+    font-style: italic;
+    text-align: center;
+    margin-top: 30px;
+    color: #777;
+}
+
+/* Egg Section */
+.egg-facts {
+    text-align: center;
+    font-size: 1.1em;
+    margin-bottom: 30px;
+}
+
+.egg-gallery {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.egg-gallery img {
+    width: 100%;
+    max-width: 350px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Contact Form */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+    gap: 15px;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.contact-form textarea {
+    resize: vertical;
+}
+
+.contact-form button {
+    align-self: flex-start; /* Align button to the left */
+}
+
+/* Footer */
+footer {
+    background-color: #8B4513; /* SaddleBrown */
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 60px;
+}
+
+footer .social-links {
+    margin-top: 15px;
+}
+
+footer .social-links img {
+    height: 30px;
+    margin: 0 10px;
+    transition: transform 0.2s ease;
+}
+
+footer .social-links img:hover {
+    transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav ul {
+        display: none; /* Hide desktop nav by default on smaller screens */
+        flex-direction: column;
+        width: 100%;
+        background-color: #A0522D;
+        position: absolute;
+        top: 80px; /* Adjust based on header height */
+        left: 0;
+        padding: 20px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    nav ul.show { 
+        display: flex; /* Show when active */
+    }
+
+    nav ul li {
+        margin: 10px 0;
+        text-align: center;
+    }
+
+    .nav-toggle {
+        display: block; /* Show hamburger icon */
+    }
+
+    .hero-content h2 {
+        font-size: 2.5em;
+    }
+
+    .hero-content p {
+        font-size: 1em;
+    }
+
+    .info-section {
+        padding: 30px 15px;
+    }
+
+    .grid-container, .flex-container, .disease-list {
+        grid-template-columns: 1fr; /* Stack items on small screens */
+    }
+
+    .breed-card, .housing-feature, .disease-item {
+        margin-bottom: 20px;
+    }
+
+    .image-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .egg-gallery {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    nav .logo h1 {
+        font-size: 1.5em;
+    }
+
+    .hero-content h2 {
+        font-size: 2em;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+
+    .info-section h2 {
+        font-size: 2em;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="images/chicken-logo.png" alt="Chicken Logo">
+                <h1>Cluck & Learn</h1>
+            </div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#breeds">Breeds</a></li>
+                <li><a href="#care">Care Guide</a></li>
+                <li><a href="#housing">Housing</a></li>
+                <li><a href="#health">Health</a></li>
+                <li><a href="#eggs">Eggs</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="toggle navigation">
+                <span class="hamburger"></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <h2>Welcome to the Wonderful World of Chickens!</h2>
+                <p>Everything you need to know about keeping happy, healthy, and productive chickens.</p>
+                <a href="#breeds" class="btn-primary">Explore Breeds</a>
+            </div>
+        </section>
+
+        <section id="breeds" class="info-section">
+            <h2>Popular Chicken Breeds</h2>
+            <div class="grid-container breed-grid">
+                <div class="breed-card">
+                    <img src="images/breed-rhode-island-red.jpg" alt="Rhode Island Red">
+                    <h3>Rhode Island Red</h3>
+                    <p>Excellent layers of brown eggs, hardy and friendly.</p>
+                    <button class="learn-more-btn" data-breed="rhode-island-red">Learn More</button>
+                </div>
+                <div class="breed-card">
+                    <img src="images/breed-leghorn.jpg" alt="Leghorn">
+                    <h3>Leghorn</h3>
+                    <p>Prolific layers of white eggs, active and alert.</p>
+                    <button class="learn-more-btn" data-breed="leghorn">Learn More</button>
+                </div>
+                </div>
+        </section>
+
+        <section id="care" class="info-section">
+            <h2>Chicken Care Guide</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">Feeding Your Chickens</button>
+                    <div class="accordion-content">
+                        <p>Provide a balanced diet of commercial feed, supplemented with treats and grit. Ensure fresh water is always available.</p>
+                        <ul>
+                            <li>Chick Starter (0-8 weeks)</li>
+                            <li>Grower Feed (8-18 weeks)</li>
+                            <li>Layer Feed (18+ weeks)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Watering Needs</button>
+                    <div class="accordion-content">
+                        <p>Clean, fresh water is crucial for chicken health and egg production. Use appropriate waterers and clean them daily.</p>
+                    </div>
+                </div>
+                </div>
+        </section>
+
+        <section id="housing" class="info-section">
+            <h2>Building the Perfect Coop</h2>
+            <div class="flex-container">
+                <div class="housing-feature">
+                    <h3>Space Requirements</h3>
+                    <p>At least 2-3 square feet per bird inside the coop, and 8-10 square feet per bird in the run.</p>
+                </div>
+                <div class="housing-feature">
+                    <h3>Ventilation</h3>
+                    <p>Essential for air quality and preventing respiratory issues. Ensure good airflow without drafts.</p>
+                </div>
+                <div class="housing-feature">
+                    <h3>Nesting Boxes</h3>
+                    <p>One nesting box for every 3-4 hens is usually sufficient.</p>
+                </div>
+                <div class="housing-feature">
+                    <h3>Roosting Bars</h3>
+                    <p>Provide sturdy roosting bars for chickens to sleep on at night, off the ground.</p>
+                </div>
+            </div>
+            <div class="image-gallery">
+                <img src="images/coop-design-1.jpg" alt="Coop Design 1">
+                <img src="images/coop-design-2.jpg" alt="Coop Design 2">
+            </div>
+        </section>
+
+        <section id="health" class="info-section">
+            <h2>Common Chicken Health Issues</h2>
+            <div class="disease-list">
+                <div class="disease-item">
+                    <h3>Mites and Lice</h3>
+                    <p>Symptoms: Itching, feather loss, reduced egg production. Treatment: Dusting powders, sprays, coop cleaning.</p>
+                </div>
+                <div class="disease-item">
+                    <h3>Coccidiosis</h3>
+                    <p>Symptoms: Bloody droppings, lethargy, ruffled feathers. Treatment: Medicated feed or water.</p>
+                </div>
+                </div>
+            <p class="health-disclaimer">Always consult with a veterinarian for accurate diagnosis and treatment plans.</p>
+        </section>
+
+        <section id="eggs" class="info-section">
+            <h2>The Wonderful World of Chicken Eggs</h2>
+            <div class="egg-facts">
+                <p>Did you know an average hen lays 5-6 eggs per week?</p>
+                <p>Egg color is determined by the chicken's breed, not its nutritional value.</p>
+                <div class="egg-gallery">
+                    <img src="images/egg-colors.jpg" alt="Different egg colors">
+                    <img src="images/egg-nest.jpg" alt="Eggs in a nest">
+                </div>
+            </div>
+            <h3>Storing and Washing Eggs</h3>
+            <ul>
+                <li>Store unwashed eggs at room temperature for a few days, or refrigerate for longer.</li>
+                <li>Wash eggs only right before use to preserve the natural bloom.</li>
+            </ul>
+        </section>
+
+        <section id="faq" class="info-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-accordion accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">How long do chickens live?</button>
+                    <div class="accordion-content">
+                        <p>On average, chickens live 5-10 years, depending on breed and care.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Do I need a rooster for hens to lay eggs?</button>
+                    <div class="accordion-content">
+                        <p>No, hens will lay eggs without a rooster. A rooster is only needed for fertile eggs (for hatching chicks).</p>
+                    </div>
+                </div>
+                </div>
+        </section>
+
+        <section id="contact" class="info-section">
+            <h2>Get in Touch!</h2>
+            <p>Have a question or want to share your chicken stories? We'd love to hear from you!</p>
+            <form action="#" method="POST" class="contact-form">
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+                <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Cluck & Learn. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><img src="images/facebook-icon.png" alt="Facebook"></a>
+            <a href="#"><img src="images/instagram-icon.png" alt="Instagram"></a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling for navigation
+    document.querySelectorAll('nav ul li a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+
+            // Close mobile nav if open
+            if (window.innerWidth <= 768) {
+                const navToggle = document.querySelector('.nav-toggle');
+                const navUl = document.querySelector('nav ul');
+                navUl.classList.remove('show');
+                navToggle.classList.remove('open');
+            }
+        });
+    });
+
+    // Mobile Navigation Toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navUl = document.querySelector('nav ul');
+
+    navToggle.addEventListener('click', () => {
+        navUl.classList.toggle('show');
+        navToggle.classList.toggle('open');
+    });
+
+    // Accordion functionality for Care Guide and FAQ
+    document.querySelectorAll('.accordion-header').forEach(button => {
+        button.addEventListener('click', () => {
+            const accordionContent = button.nextElementSibling;
+
+            // Close all other open accordions in the same group
+            const parentAccordion = button.closest('.accordion');
+            if (parentAccordion) {
+                parentAccordion.querySelectorAll('.accordion-header.active').forEach(activeHeader => {
+                    if (activeHeader !== button) {
+                        activeHeader.classList.remove('active');
+                        activeHeader.nextElementSibling.classList.remove('show');
+                        activeHeader.nextElementSibling.style.maxHeight = null;
+                        activeHeader.nextElementSibling.style.padding = '0 20px'; // Reset padding
+                    }
+                });
+            }
+
+            button.classList.toggle('active');
+            accordionContent.classList.toggle('show');
+
+            if (accordionContent.classList.contains('show')) {
+                accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+                accordionContent.style.padding = '20px'; // Apply padding when open
+            } else {
+                accordionContent.style.maxHeight = null;
+                accordionContent.style.padding = '0 20px'; // Reset padding when closed
+            }
+        });
+    });
+
+    // Dynamic "Learn More" button for Breed Cards (Example - could open a modal)
+    document.querySelectorAll('.learn-more-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const breedName = button.dataset.breed;
+            alert(`You want to learn more about the ${breedName.replace(/-/g, ' ')}! This would open a detailed modal or navigate to a dedicated page.`);
+            // In a real site, you'd open a modal here or redirect to a specific breed page
+        });
+    });
+
+    // Basic Form Submission (prevent default for demo)
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! (Form submission is for demo purposes only.)');
+            this.reset(); // Clear the form
+        });
+    }
+
+    // Optional: Add a subtle animation on scroll for info sections
+    const infoSections = document.querySelectorAll('.info-section');
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            } else {
+                entry.target.style.opacity = 0; // Hide when out of view
+                entry.target.style.transform = 'translateY(20px)';
+            }
+        });
+    }, observerOptions);
+
+    infoSections.forEach(section => {
+        section.style.opacity = 0; // Initial state
+        section.style.transform = 'translateY(20px)';
+        section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        sectionObserver.observe(section);
+    });
+});
+    </script>
+</body>
+</html>
