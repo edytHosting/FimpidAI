@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Homepage Clone</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #e6ecf0; display: flex; justify-content: center; min-height: 100vh; }
+        .container { display: flex; width: 100%; max-width: 1200px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+
+        /* Left Navigation */
+        .nav-left { width: 250px; padding: 20px 0; border-right: 1px solid #eee; display: flex; flex-direction: column; align-items: flex-end; }
+        .nav-left ul { list-style: none; padding: 0; margin: 0; width: 100%; }
+        .nav-left li { margin-bottom: 10px; }
+        .nav-left a { display: flex; align-items: center; padding: 10px 20px; text-decoration: none; color: #333; font-size: 1.2em; font-weight: bold; border-radius: 9999px; transition: background-color 0.2s ease; margin-right: 10px; }
+        .nav-left a:hover { background-color: #e8f5fe; color: #1da1f2; }
+        .nav-left a span { margin-right: 15px; font-size: 1.5em; }
+        .nav-left .tweet-button { background-color: #1da1f2; color: white; padding: 12px 0; text-align: center; border-radius: 9999px; width: 80%; margin-top: 20px; font-weight: bold; font-size: 1.1em; cursor: pointer; }
+        .nav-left .tweet-button:hover { background-color: #1a91da; }
+
+        /* Main Feed */
+        .main-feed { flex-grow: 1; border-right: 1px solid #eee; }
+        .main-feed-header { padding: 15px; border-bottom: 1px solid #eee; font-size: 1.3em; font-weight: bold; color: #333; }
+        .tweet-composer { display: flex; padding: 15px; border-bottom: 1px solid #eee; }
+        .tweet-composer textarea { flex-grow: 1; border: none; outline: none; resize: none; font-size: 1.1em; padding: 10px; }
+        .tweet-composer button { background-color: #1da1f2; color: white; border: none; padding: 10px 20px; border-radius: 9999px; margin-left: 15px; font-weight: bold; cursor: pointer; }
+        .tweet-composer button:hover { background-color: #1a91da; }
+
+        .tweet-list .tweet-item { padding: 15px; border-bottom: 1px solid #eee; display: flex; }
+        .tweet-item .avatar { width: 48px; height: 48px; border-radius: 50%; background-color: #ccc; margin-right: 15px; flex-shrink: 0; }
+        .tweet-item .tweet-content { flex-grow: 1; }
+        .tweet-item .tweet-header { display: flex; align-items: center; margin-bottom: 5px; }
+        .tweet-item .tweet-header .username { font-weight: bold; margin-right: 5px; }
+        .tweet-item .tweet-header .handle { color: #657786; font-size: 0.9em; }
+        .tweet-item .tweet-text { margin-bottom: 10px; line-height: 1.4; word-wrap: break-word; }
+        .tweet-item .tweet-actions { display: flex; justify-content: space-around; color: #657786; font-size: 0.9em; }
+        .tweet-item .tweet-actions div { cursor: pointer; display: flex; align-items: center; }
+        .tweet-item .tweet-actions div:hover { color: #1da1f2; }
+
+        /* Right Sidebar */
+        .right-sidebar { width: 350px; padding: 20px; }
+        .search-box { background-color: #e6ecf0; border-radius: 9999px; padding: 10px 15px; display: flex; align-items: center; margin-bottom: 20px; }
+        .search-box input { border: none; outline: none; background: transparent; flex-grow: 1; font-size: 1em; }
+        .section-box { background-color: #f5f8fa; border-radius: 16px; margin-bottom: 20px; overflow: hidden; }
+        .section-box h3 { padding: 15px; border-bottom: 1px solid #eee; margin: 0; font-size: 1.2em; color: #333; }
+        .section-box ul { list-style: none; padding: 0; margin: 0; }
+        .section-box li { padding: 15px; border-bottom: 1px solid #eee; }
+        .section-box li:last-child { border-bottom: none; }
+        .section-box li a { text-decoration: none; color: #1da1f2; font-size: 0.9em; }
+        .section-box .trend-category { color: #657786; font-size: 0.8em; margin-bottom: 5px; }
+        .section-box .trend-name { font-weight: bold; margin-bottom: 5px; }
+        .section-box .trend-tweets { color: #657786; font-size: 0.8em; }
+        .section-box .follow-item { display: flex; align-items: center; }
+        .section-box .follow-item .avatar { width: 48px; height: 48px; border-radius: 50%; background-color: #ccc; margin-right: 10px; flex-shrink: 0; }
+        .section-box .follow-item .user-info { flex-grow: 1; }
+        .section-box .follow-item .user-info .name { font-weight: bold; }
+        .section-box .follow-item .user-info .handle { color: #657786; font-size: 0.9em; }
+        .section-box .follow-item button { background-color: #1da1f2; color: white; border: none; padding: 8px 15px; border-radius: 9999px; font-weight: bold; cursor: pointer; }
+        .section-box .follow-item button:hover { background-color: #1a91da; }
+        .section-box .show-more { padding: 15px; color: #1da1f2; cursor: pointer; }
+        .section-box .show-more:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-left">
+            <ul>
+                <li><a href="#"><span style="margin-right:15px;">🏠</span>Home</a></li>
+                <li><a href="#"><span style="margin-right:15px;">🔍</span>Search</a></li>
+                <li><a href="#"><span style="margin-right:15px;">🔔</span>Notifications</a></li>
+                <li><a href="#"><span style="margin-right:15px;">✉️</span>Messages</a></li>
+                <li><a href="#"><span style="margin-right:15px;">👤</span>Profile</a></li>
+            </ul>
+            <div class="tweet-button">Tweet</div>
+        </div>
+        <div class="main-feed">
+            <div class="main-feed-header">Home</div>
+            <div class="tweet-composer">
+                <textarea id="tweetInput" placeholder="What's happening?"></textarea>
+                <button id="postTweetButton">Tweet</button>
+            </div>
+            <div class="tweet-list" id="tweetList">
+                <!-- Sample Tweets -->
+                <div class="tweet-item">
+                    <div class="avatar"></div>
+                    <div class="tweet-content">
+                        <div class="tweet-header">
+                            <span class="username">John Doe</span>
+                            <span class="handle">@johndoe</span>
+                        </div>
+                        <div class="tweet-text">This is a sample tweet about the amazing weather today! #sunnydays #webdev</div>
+                        <div class="tweet-actions">
+                            <div>💬 12</div>
+                            <div>🔄 5</div>
+                            <div>❤️ 23</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tweet-item">
+                    <div class="avatar"></div>
+                    <div class="tweet-content">
+                        <div class="tweet-header">
+                            <span class="username">Jane Smith</span>
+                            <span class="handle">@janesmith</span>
+                        </div>
+                        <div class="tweet-text">Just finished a great coding session! Feeling productive. 💪</div>
+                        <div class="tweet-actions">
+                            <div>💬 8</div>
+                            <div>🔄 3</div>
+                            <div>❤️ 18</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-sidebar">
+            <div class="search-box">
+                <span style="margin-right:10px;">🔍</span>
+                <input type="text" placeholder="Search Twitter">
+            </div>
+            <div class="section-box">
+                <h3>Trends for you</h3>
+                <ul>
+                    <li>
+                        <div class="trend-category">Trending in Technology</div>
+                        <div class="trend-name">#AIAdvancements</div>
+                        <div class="trend-tweets">15.5K Tweets</div>
+                    </li>
+                    <li>
+                        <div class="trend-category">Sports</div>
+                        <div class="trend-name">#WorldCupFinal</div>
+                        <div class="trend-tweets">50.2K Tweets</div>
+                    </li>
+                    <li>
+                        <div class="trend-category">Politics</div>
+                        <div class="trend-name">#Election2024</div>
+                        <div class="trend-tweets">25.1K Tweets</div>
+                    </li>
+                </ul>
+                <div class="show-more">Show more</div>
+            </div>
+            <div class="section-box">
+                <h3>Who to follow</h3>
+                <ul>
+                    <li>
+                        <div class="follow-item">
+                            <div class="avatar"></div>
+                            <div class="user-info">
+                                <div class="name">Code Creator</div>
+                                <div class="handle">@codecreator</div>
+                            </div>
+                            <button>Follow</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="follow-item">
+                            <div class="avatar"></div>
+                            <div class="user-info">
+                                <div class="name">Web Designer</div>
+                                <div class="handle">@webdesignwiz</div>
+                            </div>
+                            <button>Follow</button>
+                        </div>
+                    </li>
+                </ul>
+                <div class="show-more">Show more</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tweetInput = document.getElementById('tweetInput');
+            const postTweetButton = document.getElementById('postTweetButton');
+            const tweetList = document.getElementById('tweetList');
+
+            postTweetButton.addEventListener('click', () => {
+                const tweetText = tweetInput.value.trim();
+                if (tweetText) {
+                    const newTweet = document.createElement('div');
+                    newTweet.classList.add('tweet-item');
+                    newTweet.innerHTML = `
+                        <div class="avatar"></div>
+                        <div class="tweet-content">
+                            <div class="tweet-header">
+                                <span class="username">You</span>
+                                <span class="handle">@yourhandle</span>
+                            </div>
+                            <div class="tweet-text">${tweetText}</div>
+                            <div class="tweet-actions">
+                                <div>💬 0</div>
+                                <div>🔄 0</div>
+                                <div>❤️ 0</div>
+                            </div>
+                        </div>
+                    `;
+                    tweetList.prepend(newTweet); // Add new tweet to the top
+                    tweetInput.value = ''; // Clear the input
+                }
+            });
+        });
+    </script>
+</body>
+</html>
