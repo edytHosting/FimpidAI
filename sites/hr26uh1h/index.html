@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discord Clone</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background-color: #36393f;
+      color: #dcddde;
+      overflow: hidden;
+      display: flex;
+      height: 100vh;
+    }
+
+    #app-container {
+      display: grid;
+      grid-template-columns: 72px 240px 1fr 240px;
+      grid-template-rows: 1fr;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    #server-sidebar {
+      background-color: #202225;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    #server-sidebar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .server-icon {
+      width: 48px;
+      height: 48px;
+      background-color: #36393f;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: border-radius 0.15s ease-out, background-color 0.15s ease-out;
+    }
+
+    .server-icon:hover {
+      border-radius: 30%;
+      background-color: #5865f2;
+    }
+
+    .server-icon.active {
+      border-radius: 30%;
+      background-color: #5865f2;
+    }
+
+    #channel-sidebar {
+      background-color: #2f3136;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    #channel-sidebar h2 {
+      color: #ffffff;
+      font-size: 16px;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .channel-category {
+      font-size: 12px;
+      color: #96989d;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .channel-item {
+      padding: 6px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      color: #8e9297;
+      margin-bottom: 2px;
+    }
+
+    .channel-item:hover {
+      background-color: rgba(79, 84, 92, 0.32);
+      color: #dcddde;
+    }
+
+    .channel-item.active {
+      background-color: #4f545c;
+      color: #dcddde;
+    }
+
+    #chat-area {
+      display: flex;
+      flex-direction: column;
+      background-color: #36393f;
+      position: relative;
+    }
+
+    #message-list {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column-reverse;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      display: flex;
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #7289da;
+      margin-right: 10px;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .message-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-header {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+
+    .message-author {
+      font-weight: bold;
+      color: #ffffff;
+      margin-right: 8px;
+    }
+
+    .message-timestamp {
+      font-size: 12px;
+      color: #72767d;
+    }
+
+    .message-text {
+      font-size: 15px;
+      line-height: 1.4;
+      color: #dcddde;
+      word-wrap: break-word;
+    }
+
+    #message-input-container {
+      padding: 20px;
+      background-color: #36393f;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    #message-input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #40444b;
+      color: #dcddde;
+      font-size: 15px;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    #message-input::placeholder {
+      color: #72767d;
+    }
+
+    #user-sidebar {
+      background-color: #2f3136;
+      padding: 12px;
+      overflow-y: auto;
+    }
+
+    #user-sidebar h3 {
+      color: #96989d;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .user-item {
+      display: flex;
+      align-items: center;
+      padding: 6px 8px;
+      border-radius: 3px;
+      margin-bottom: 2px;
+      cursor: pointer;
+    }
+
+    .user-item:hover {
+      background-color: rgba(79, 84, 92, 0.32);
+    }
+
+    .user-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #7289da;
+      margin-right: 8px;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .user-name {
+      color: #dcddde;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app-container">
+    <div id="server-sidebar">
+      <div class="server-icon active">D</div>
+      <div class="server-icon">P</div>
+      <div class="server-icon">J</div>
+      <div class="server-icon">+</div>
+    </div>
+    <div id="channel-sidebar">
+      <h2>#general</h2>
+      <div class="channel-category">TEXT CHANNELS</div>
+      <div class="channel-item active"># general</div>
+      <div class="channel-item"># announcements</div>
+      <div class="channel-item"># rules</div>
+      <div class="channel-item"># memes</div>
+      <div class="channel-category">VOICE CHANNELS</div>
+      <div class="channel-item">🔊 General Voice</div>
+      <div class="channel-item">🔊 Chill Zone</div>
+    </div>
+    <div id="chat-area">
+      <div id="message-list">
+        <div class="message">
+          <div class="message-avatar">JS</div>
+          <div class="message-content">
+            <div class="message-header"><span class="message-author">JavaScript Bot</span><span class="message-timestamp">Today at 1:00 PM</span></div>
+            <div class="message-text">Welcome to your Discord-like clone! Type a message below to send it.</div>
+          </div>
+        </div>
+        <div class="message">
+          <div class="message-avatar">U1</div>
+          <div class="message-content">
+            <div class="message-header"><span class="message-author">User One</span><span class="message-timestamp">Today at 12:55 PM</span></div>
+            <div class="message-text">This is a sample message.</div>
+          </div>
+        </div>
+      </div>
+      <div id="message-input-container"><input type="text" id="message-input" placeholder="Message #general"></div>
+    </div>
+    <div id="user-sidebar">
+      <h3>ONLINE — 3</h3>
+      <div class="user-item">
+        <div class="user-avatar">AD</div>
+        <div class="user-name">AdminUser</div>
+      </div>
+      <div class="user-item">
+        <div class="user-avatar">U1</div>
+        <div class="user-name">User One</div>
+      </div>
+      <div class="user-item">
+        <div class="user-avatar">U2</div>
+        <div class="user-name">Another User</div>
+      </div>
+      <h3>OFFLINE — 2</h3>
+      <div class="user-item">
+        <div class="user-avatar">LU</div>
+        <div class="user-name">Logged Out</div>
+      </div>
+      <div class="user-item">
+        <div class="user-avatar">ID</div>
+        <div class="user-name">IdleUser</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const messageInput = document.getElementById('message-input');
+      const messageList = document.getElementById('message-list');
+      messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+
+      function sendMessage() {
+        const messageText = messageInput.value.trim();
+        if (messageText === '') return;
+        const currentUser = {
+          name: 'You',
+          avatar: 'Me'
+        };
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        const avatarDiv = document.createElement('div');
+        avatarDiv.classList.add('message-avatar');
+        avatarDiv.textContent = currentUser.avatar;
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('message-content');
+        const headerDiv = document.createElement('div');
+        headerDiv.classList.add('message-header');
+        const authorSpan = document.createElement('span');
+        authorSpan.classList.add('message-author');
+        authorSpan.textContent = currentUser.name;
+        const timestampSpan = document.createElement('span');
+        timestampSpan.classList.add('message-timestamp');
+        const now = new Date();
+        timestampSpan.textContent = `Today at ${now.getHours() % 12 || 12}:${now.getMinutes().toString().padStart(2, '0')} ${now.getHours() >= 12 ? 'PM' : 'AM'}`;
+        const textDiv = document.createElement('div');
+        textDiv.classList.add('message-text');
+        textDiv.textContent = messageText;
+        headerDiv.appendChild(authorSpan);
+        headerDiv.appendChild(timestampSpan);
+        contentDiv.appendChild(headerDiv);
+        contentDiv.appendChild(textDiv);
+        messageDiv.appendChild(avatarDiv);
+        messageDiv.appendChild(contentDiv);
+        messageList.prepend(messageDiv);
+        messageInput.value = '';
+        messageList.scrollTop = messageList.scrollHeight;
+      }
+      const serverIcons = document.querySelectorAll('.server-icon');
+      serverIcons.forEach(icon => {
+        icon.addEventListener('click', () => {
+          serverIcons.forEach(i => i.classList.remove('active'));
+          icon.classList.add('active');
+          console.log(`Server ${icon.textContent} selected.`);
+        });
+      });
+      const channelItems = document.querySelectorAll('.channel-item');
+      channelItems.forEach(item => {
+        item.addEventListener('click', () => {
+          channelItems.forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+          document.getElementById('channel-sidebar').querySelector('h2').textContent = item.textContent;
+          document.getElementById('message-input').placeholder = `Message ${item.textContent}`;
+          messageList.innerHTML = `<div class="message"><div class="message-avatar">JS</div><div class="message-content"><div class="message-header"><span class="message-author">JavaScript Bot</span><span class="message-timestamp">Today at 1:00 PM</span></div><div class="message-text">Welcome to #${item.textContent.trim().replace('#', '')}! Type a message below to send it.</div></div></div>`;
+          console.log(`Channel ${item.textContent} selected.`);
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
