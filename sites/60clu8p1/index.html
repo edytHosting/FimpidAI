@@ -189,7 +189,8 @@
       align-items: center;
       gap: 10px;
       cursor: pointer;
-      transition: background-color .3s ease
+      transition: background-color .3s ease;
+      position: relative
     }
 
     .page-header .user-profile .profile-dropdown:hover {
@@ -205,6 +206,48 @@
     .page-header .user-profile .profile-dropdown span {
       font-weight: bold;
       margin-right: 5px
+    }
+
+    .profile-dropdown .dropdown-content {
+      display: none;
+      position: absolute;
+      top: calc(100% + 5px);
+      right: 0;
+      background-color: #282828;
+      min-width: 180px;
+      border-radius: 8px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, .5);
+      z-index: 11;
+      padding: 4px 0
+    }
+
+    .profile-dropdown .dropdown-content.show {
+      display: block
+    }
+
+    .profile-dropdown .dropdown-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0
+    }
+
+    .profile-dropdown .dropdown-content li a {
+      color: var(--spotify-text-color);
+      padding: 10px 15px;
+      text-decoration: none;
+      display: block;
+      font-size: 14px;
+      white-space: nowrap
+    }
+
+    .profile-dropdown .dropdown-content li a:hover {
+      background-color: #3e3e3e
+    }
+
+    .profile-dropdown .dropdown-content .dropdown-separator {
+      height: 1px;
+      background-color: #3e3e3e;
+      margin: 5px 0
     }
 
     .home-page-content h2 {
@@ -770,7 +813,7 @@
       <nav>
         <ul>
           <li><a href="#" data-page="home" class="active"><i class="fas fa-home"></i> Home</a></li>
-          <li><a href="search.html" data-page="search"><i class="fas fa-search"></i> Search</a></li>
+          <li><a href="#" data-page="search"><i class="fas fa-search"></i> Search</a></li>
           <li><a href="#" data-page="library"><i class="fas fa-grip-lines"></i> Your Library</a></li>
         </ul>
       </nav>
@@ -789,7 +832,18 @@
         <div class="page-header">
           <div class="nav-buttons"><button><i class="fas fa-chevron-left"></i></button><button><i class="fas fa-chevron-right"></i></button></div>
           <div class="user-profile"><button>Explore Premium</button><button>Install App</button>
-            <div class="profile-dropdown"><img src="https://jessehoekema.com/assets/pfp_new.png" alt="User Avatar"><span>Jessi Flessi</span><i class="fas fa-caret-down"></i></div>
+            <div class="profile-dropdown"><img src="https://jessehoekema.com/assets/pfp_new.png" alt="User Avatar"><span>Jessi Flessi</span><i class="fas fa-caret-down"></i>
+              <div class="dropdown-content">
+                <ul>
+                  <li><a href="#">Account</a></li>
+                  <li><a href="#">Profile</a></li>
+                  <li><a href="#">Upgrade to Premium</a></li>
+                  <li class="dropdown-separator"></li>
+                  <li><a href="#">Settings</a></li>
+                  <li><a href="#">Log out</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
         <h2 id="greeting-text">Good morning</h2>
@@ -880,7 +934,18 @@
           <div class="nav-buttons"><button><i class="fas fa-chevron-left"></i></button><button><i class="fas fa-chevron-right"></i></button></div>
           <div class="search-input-wrapper"><i class="fas fa-search"></i><input type="text" placeholder="What do you want to listen to?"></div>
           <div class="user-profile"><button>Explore Premium</button><button>Install App</button>
-            <div class="profile-dropdown"><img src="https://jessehoekema.com/assets/pfp_new.png" alt="User Avatar"><span>Jessi Flessi</span><i class="fas fa-caret-down"></i></div>
+            <div class="profile-dropdown"><img src="https://jessehoekema.com/assets/pfp_new.png" alt="User Avatar"><span>Jessi Flessi</span><i class="fas fa-caret-down"></i>
+              <div class="dropdown-content">
+                <ul>
+                  <li><a href="#">Account</a></li>
+                  <li><a href="#">Profile</a></li>
+                  <li><a href="#">Upgrade to Premium</a></li>
+                  <li class="dropdown-separator"></li>
+                  <li><a href="#">Settings</a></li>
+                  <li><a href="#">Log out</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
         <h2>Browse all</h2>
@@ -946,7 +1011,18 @@
         <div class="page-header library-header-top">
           <div class="nav-buttons"><button><i class="fas fa-chevron-left"></i></button><button><i class="fas fa-chevron-right"></i></button></div>
           <div class="user-profile"><button>Explore Premium</button><button>Install App</button>
-            <div class="profile-dropdown"><img src="https://jessehoekema.com/assets/pfp_new.png" alt="User Avatar"><span>Jessi Flessi</span><i class="fas fa-caret-down"></i></div>
+            <div class="profile-dropdown"><img src="https://jessehoekema.com/assets/pfp_new.png" alt="User Avatar"><span>Jessi Flessi</span><i class="fas fa-caret-down"></i>
+              <div class="dropdown-content">
+                <ul>
+                  <li><a href="#">Account</a></li>
+                  <li><a href="#">Profile</a></li>
+                  <li><a href="#">Upgrade to Premium</a></li>
+                  <li class="dropdown-separator"></li>
+                  <li><a href="#">Settings</a></li>
+                  <li><a href="#">Log out</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
         <div class="library-filters"><button class="active">Playlists</button><button>Artists</button><button>Albums</button><button>Podcasts & Shows</button>
@@ -1114,7 +1190,20 @@
             playPauseIcon.classList.add('fa-pause-circle')
           }
         }
-      })
+      });
+      const profileDropdown = document.querySelector('.profile-dropdown');
+      const dropdownContent = document.querySelector('.profile-dropdown .dropdown-content');
+      if (profileDropdown && dropdownContent) {
+        profileDropdown.addEventListener('click', (event) => {
+          event.stopPropagation();
+          dropdownContent.classList.toggle('show')
+        });
+        document.addEventListener('click', (event) => {
+          if (!profileDropdown.contains(event.target)) {
+            dropdownContent.classList.remove('show')
+          }
+        })
+      }
     });
   </script>
 </body>
