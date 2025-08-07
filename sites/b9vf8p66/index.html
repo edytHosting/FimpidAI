@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>TikTok Copy</title>
+  <title>TikTok Copy</title><!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     body,
     html {
@@ -13,14 +14,14 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       overflow: hidden;
       background-color: black;
-      overscroll-behavior-y: contain;
+      overscroll-behavior-y: contain
     }
 
     .tiktok-container {
       position: relative;
       width: 100vw;
       height: 100vh;
-      background-color: black;
+      background-color: black
     }
 
     .video-player {
@@ -30,7 +31,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: 0;
+      z-index: 0
     }
 
     .content-wrapper {
@@ -41,8 +42,8 @@
       flex-direction: column;
       z-index: 1;
       color: white;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-      box-sizing: border-box;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, .5);
+      box-sizing: border-box
     }
 
     .top-bar {
@@ -53,58 +54,51 @@
       flex-shrink: 0;
       padding: 0 15px;
       box-sizing: border-box;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .4), transparent);
       position: relative;
-      z-index: 2;
+      z-index: 2
     }
 
     .top-bar-left {
       flex: 1;
       display: flex;
-      justify-content: flex-start;
+      justify-content: flex-start
     }
 
     .top-bar-right {
       display: flex;
-      align-items: center;
+      align-items: center
     }
 
     .live-icon {
       background-color: #fe2c55;
       color: white;
-      font-size: 0.7em;
+      font-size: .7em;
       font-weight: bold;
       padding: 3px 6px;
       border-radius: 4px;
       display: flex;
       align-items: center;
-      line-height: 1;
-    }
-
-    .live-icon::before {
-      content: '•';
-      font-size: 1.2em;
-      margin-right: 3px;
-      color: white;
+      line-height: 1
     }
 
     .top-bar-tabs {
       display: flex;
       flex: 1;
       justify-content: center;
-      position: relative;
+      position: relative
     }
 
     .tab-item {
       font-size: 1.1em;
       font-weight: bold;
-      color: rgba(255, 255, 255, 0.6);
+      color: rgba(255, 255, 255, .6);
       padding: 0 10px;
-      position: relative;
+      position: relative
     }
 
     .tab-item.active {
-      color: white;
+      color: white
     }
 
     .tab-item.active::after {
@@ -116,12 +110,14 @@
       width: 25px;
       height: 3px;
       background-color: white;
-      border-radius: 2px;
+      border-radius: 2px
     }
 
-    .search-icon {
-      font-size: 1.6em;
+    lucide-icon.search-icon {
+      width: 1.6em;
+      height: 1.6em;
       margin-left: 15px;
+      color: inherit
     }
 
     .main-content-area {
@@ -130,20 +126,20 @@
       flex-direction: column;
       justify-content: flex-end;
       padding: 15px;
-      box-sizing: border-box;
+      box-sizing: border-box
     }
 
     .video-content {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      width: 100%;
+      width: 100%
     }
 
     .video-details {
       flex: 1;
       margin-right: 15px;
-      overflow: hidden;
+      overflow: hidden
     }
 
     .user-info {
@@ -152,33 +148,35 @@
       margin-bottom: 5px;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
+      text-overflow: ellipsis
     }
 
     .description {
-      font-size: 0.95em;
+      font-size: .95em;
       margin-bottom: 5px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      line-height: 1.3em;
+      line-height: 1.3em
     }
 
     .music-info {
-      font-size: 0.85em;
+      font-size: .85em;
       display: flex;
       align-items: center;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
+      text-overflow: ellipsis
     }
 
-    .music-info .music-icon {
+    .music-info lucide-icon.music-icon {
+      width: 1em;
+      height: 1em;
       margin-right: 5px;
-      font-size: 1em;
       animation: spin 3s linear infinite;
       display: inline-block;
+      color: inherit
     }
 
     .action-buttons {
@@ -186,7 +184,7 @@
       flex-direction: column;
       align-items: center;
       min-width: 60px;
-      padding-bottom: 20px;
+      padding-bottom: 20px
     }
 
     .action-button {
@@ -194,18 +192,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 0.8em;
+      font-size: .8em
     }
 
-    .action-button .icon {
-      font-size: 2.2em;
+    .action-button lucide-icon.icon {
+      width: 2.2em;
+      height: 2.2em;
       margin-bottom: 3px;
       line-height: 1;
+      color: inherit
     }
 
     .action-button .count {
-      font-size: 0.7em;
-      line-height: 1;
+      font-size: .7em;
+      line-height: 1
     }
 
     .profile-pic-container {
@@ -213,7 +213,7 @@
       margin-bottom: 25px;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: center
     }
 
     .profile-pic-img {
@@ -221,10 +221,10 @@
       height: 48px;
       border-radius: 50%;
       border: 2px solid white;
-      object-fit: cover;
+      object-fit: cover
     }
 
-    .add-follow-btn {
+    lucide-icon.add-follow-btn {
       position: absolute;
       bottom: -10px;
       background-color: #FE2C55;
@@ -235,30 +235,27 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2em;
-      font-weight: bold;
-      line-height: 1;
-      border: 1px solid black;
+      border: 1px solid black
     }
 
-    .share-icon {
-      font-size: 2.0em;
+    lucide-icon.share-icon {
       transform: rotate(45deg);
-      display: inline-block;
+      display: inline-block
     }
 
     .music-action-disc {
-      margin-top: 20px;
+      margin-top: 20px
     }
 
-    .music-icon-action {
-      font-size: 3em;
-      color: rgba(255, 255, 255, 0.8);
+    lucide-icon.music-icon-action {
+      width: 3em;
+      height: 3em;
+      color: rgba(255, 255, 255, .8);
       animation: spin 3s linear infinite;
       display: block;
       border-radius: 50%;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
+      border: 3px solid rgba(255, 255, 255, .1);
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, .3)
     }
 
     .bottom-nav {
@@ -269,12 +266,12 @@
       height: 60px;
       width: 100%;
       flex-shrink: 0;
-      box-sizing: border-box;
+      box-sizing: border-box
     }
 
     .nav-item {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 0.75em;
+      color: rgba(255, 255, 255, .6);
+      font-size: .75em;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -283,18 +280,20 @@
       text-align: center;
       padding: 5px 0;
       user-select: none;
-      cursor: pointer;
+      cursor: pointer
     }
 
     .nav-item.active {
       color: white;
-      font-weight: bold;
+      font-weight: bold
     }
 
-    .nav-item .icon {
-      font-size: 1.5em;
+    .nav-item lucide-icon.icon {
+      width: 1.5em;
+      height: 1.5em;
       margin-bottom: 2px;
       line-height: 1;
+      color: inherit
     }
 
     .add-button {
@@ -308,7 +307,7 @@
       width: 48px;
       box-sizing: border-box;
       margin: 0 10px;
-      overflow: hidden;
+      overflow: hidden
     }
 
     .add-button::before,
@@ -318,38 +317,37 @@
       top: 0;
       width: 10px;
       height: 100%;
-      z-index: 0;
+      z-index: 0
     }
 
     .add-button::before {
       left: 0;
-      background: linear-gradient(to right, #00F2EA, transparent);
-      border-radius: 8px 0 0 8px;
+      background: linear-gradient(to right, #00f2ea, transparent);
+      border-radius: 8px 0 0 8px
     }
 
     .add-button::after {
       right: 0;
-      background: linear-gradient(to left, #7200FF, transparent);
-      border-radius: 0 8px 8px 0;
+      background: linear-gradient(to left, #7200ff, transparent);
+      border-radius: 0 8px 8px 0
     }
 
-    .add-icon {
+    lucide-icon.add-icon {
       position: relative;
       z-index: 1;
-      font-size: 1.8em !important;
-      margin: 0 !important;
-      color: black;
-      font-weight: bold;
-      line-height: 1;
+      width: 1.8em;
+      height: 1.8em;
+      margin: 0;
+      color: black
     }
 
     @keyframes spin {
       0% {
-        transform: rotate(0deg);
+        transform: rotate(0deg)
       }
 
       100% {
-        transform: rotate(360deg);
+        transform: rotate(360deg)
       }
     }
   </style>
@@ -361,32 +359,30 @@
       <div class="top-bar">
         <div class="top-bar-left"><span class="live-icon">LIVE</span></div>
         <div class="top-bar-tabs"><span class="tab-item">Following</span><span class="tab-item active">For You</span></div>
-        <div class="top-bar-right"><span class="search-icon">🔍</span></div>
+        <div class="top-bar-right"><lucide-icon name="search" class="search-icon"></lucide-icon></div>
       </div>
       <div class="main-content-area">
         <div class="video-content">
           <div class="video-details">
             <div class="user-info">@tiktok_user_name</div>
             <div class="description">This is a cool video description! Check out my other videos for more awesome content! #foryoupage #viral #coolvideo #anotherhashtag</div>
-            <div class="music-info"><span class="music-icon">💿</span> Original Sound - coolmusic</div>
+            <div class="music-info"><lucide-icon name="disc" class="music-icon"></lucide-icon> Original Sound - coolmusic</div>
           </div>
           <div class="action-buttons">
-            <div class="action-button profile-pic-container"><img class="profile-pic-img" src="https://via.placeholder.com/48/FF0000/FFFFFF?text=P" alt="profile">
-              <div class="add-follow-btn">➕</div>
-            </div>
-            <div class="action-button"><span class="icon">❤️</span><span class="count">99.9K</span></div>
-            <div class="action-button"><span class="icon">💬</span><span class="count">1.2K</span></div>
-            <div class="action-button"><span class="icon share-icon">↗️</span><span class="count">876</span></div>
-            <div class="action-button music-action-disc"><span class="icon music-icon-action">💿</span></div>
+            <div class="action-button profile-pic-container"><img class="profile-pic-img" src="https://via.placeholder.com/48/FF0000/FFFFFF?text=P" alt="profile"><lucide-icon name="plus" class="add-follow-btn"></lucide-icon></div>
+            <div class="action-button"><lucide-icon name="heart" class="icon"></lucide-icon><span class="count">99.9K</span></div>
+            <div class="action-button"><lucide-icon name="message-circle" class="icon"></lucide-icon><span class="count">1.2K</span></div>
+            <div class="action-button"><lucide-icon name="share" class="icon share-icon"></lucide-icon><span class="count">876</span></div>
+            <div class="action-button music-action-disc"><lucide-icon name="disc" class="icon music-icon-action"></lucide-icon></div>
           </div>
         </div>
       </div>
       <div class="bottom-nav">
-        <div class="nav-item active"><span class="icon">🏠</span><span class="text">Home</span></div>
-        <div class="nav-item"><span class="icon">🔍</span><span class="text">Discover</span></div>
-        <div class="nav-item add-button"><span class="add-icon">➕</span></div>
-        <div class="nav-item"><span class="icon">✉️</span><span class="text">Inbox</span></div>
-        <div class="nav-item"><span class="icon">👤</span><span class="text">Profile</span></div>
+        <div class="nav-item active"><lucide-icon name="home" class="icon"></lucide-icon><span class="text">Home</span></div>
+        <div class="nav-item"><lucide-icon name="search" class="icon"></lucide-icon><span class="text">Discover</span></div>
+        <div class="nav-item add-button"><lucide-icon name="plus" class="add-icon"></lucide-icon></div>
+        <div class="nav-item"><lucide-icon name="inbox" class="icon"></lucide-icon><span class="text">Inbox</span></div>
+        <div class="nav-item"><lucide-icon name="user" class="icon"></lucide-icon><span class="text">Profile</span></div>
       </div>
     </div>
   </div>
@@ -396,38 +392,38 @@
     container.addEventListener('click', e => {
       if (!e.target.closest('.top-bar,.action-buttons,.bottom-nav')) {
         if (video.paused) {
-          video.play();
+          video.play()
         } else {
-          video.pause();
+          video.pause()
         }
       }
     });
     video.play().catch(error => {
-      console.log('Autoplay prevented:', error);
+      console.log('Autoplay prevented:', error)
     });
     let startY;
     const threshold = 50;
     container.addEventListener('touchstart', e => {
-      startY = e.touches[0].clientY;
+      startY = e.touches[0].clientY
     });
     container.addEventListener('touchend', e => {
       const endY = e.changedTouches[0].clientY;
       const diffY = endY - startY;
       if (Math.abs(diffY) > threshold) {
         if (diffY > 0) {
-          console.log("Swiped Down - (Pretend) Loading Previous Video");
+          console.log("Swiped Down - (Pretend) Loading Previous Video")
         } else {
-          console.log("Swiped Up - (Pretend) Loading Next Video");
+          console.log("Swiped Up - (Pretend) Loading Next Video")
         }
         video.currentTime = 0;
-        video.play().catch(error => console.log('Video play error on swipe:', error));
+        video.play().catch(error => console.log('Video play error on swipe:', error))
       }
     });
     video.addEventListener('contextmenu', e => e.preventDefault());
     container.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('gesturestart', function(e) {
-      e.preventDefault();
-    });
+      e.preventDefault()
+    })
   </script>
 </body>
 
