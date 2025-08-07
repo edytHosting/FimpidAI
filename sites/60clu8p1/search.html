@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Clone - Search</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --spotify-black: #121212;
+      --spotify-dark-grey: #181818;
+      --spotify-light-grey: #282828;
+      --spotify-green: #1DB954;
+      --spotify-text-color: #b3b3b3;
+      --spotify-white: #ffffff;
+      --spotify-header-bg: rgba(18, 18, 18, .7)
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--spotify-black);
+      color: var(--spotify-text-color);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+      overflow: hidden
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: var(--spotify-black);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
+      overflow-y: auto
+    }
+
+    .sidebar .logo {
+      margin-bottom: 20px
+    }
+
+    .sidebar .logo img {
+      width: 130px
+    }
+
+    .sidebar nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0
+    }
+
+    .sidebar nav ul li {
+      margin-bottom: 10px
+    }
+
+    .sidebar nav ul li a {
+      color: var(--spotify-text-color);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 4px;
+      transition: background-color .3s ease;
+      font-weight: bold
+    }
+
+    .sidebar nav ul li a i {
+      margin-right: 15px;
+      font-size: 20px
+    }
+
+    .sidebar nav ul li a:hover,
+    .sidebar nav ul li a.active {
+      color: var(--spotify-white);
+      background-color: var(--spotify-light-grey)
+    }
+
+    .sidebar .playlists {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--spotify-light-grey)
+    }
+
+    .sidebar .playlists h3 {
+      color: var(--spotify-white);
+      margin-bottom: 15px;
+      font-size: 16px
+    }
+
+    .sidebar .playlist-item {
+      display: block;
+      color: var(--spotify-text-color);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background-color .3s ease;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .sidebar .playlist-item:hover {
+      background-color: var(--spotify-light-grey);
+      color: var(--spotify-white)
+    }
+
+    .main-content {
+      flex: 1;
+      background: linear-gradient(to bottom, #303030, var(--spotify-black));
+      padding: 20px;
+      overflow-y: auto;
+      position: relative
+    }
+
+    .search-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: transparent
+    }
+
+    .search-header .nav-buttons button {
+      background-color: rgba(0, 0, 0, .5);
+      border: none;
+      color: var(--spotify-white);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      cursor: pointer;
+      font-size: 16px
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      flex-grow: 1;
+      max-width: 360px;
+      margin-left: 10px
+    }
+
+    .search-input-wrapper i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--spotify-black)
+    }
+
+    .search-input-wrapper input {
+      width: 100%;
+      padding: 12px 45px;
+      border-radius: 500px;
+      border: none;
+      background-color: var(--spotify-white);
+      color: var(--spotify-black);
+      font-size: 16px;
+      outline: none
+    }
+
+    .search-input-wrapper input::placeholder {
+      color: #888
+    }
+
+    .search-input-wrapper input:focus {
+      box-shadow: 0 0 0 2px var(--spotify-green)
+    }
+
+    .search-header .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .search-header .user-profile button {
+      background-color: var(--spotify-light-grey);
+      color: var(--spotify-white);
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color .3s ease
+    }
+
+    .search-header .user-profile button:hover {
+      background-color: #3e3e3e
+    }
+
+    .search-header .user-profile .profile-dropdown {
+      background-color: var(--spotify-light-grey);
+      color: var(--spotify-white);
+      padding: 5px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background-color .3s ease
+    }
+
+    .search-header .user-profile .profile-dropdown:hover {
+      background-color: #3e3e3e
+    }
+
+    .search-header .user-profile .profile-dropdown img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%
+    }
+
+    .search-header .user-profile .profile-dropdown span {
+      font-weight: bold;
+      margin-right: 5px
+    }
+
+    .browse-categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+      margin-top: 30px
+    }
+
+    .category-card {
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      height: 200px;
+      background-color: #5038A0;
+      cursor: pointer;
+      transition: transform .2s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+      box-sizing: border-box
+    }
+
+    .category-card:hover {
+      transform: scale(1.05)
+    }
+
+    .category-card h3 {
+      color: var(--spotify-white);
+      font-size: 22px;
+      margin: 0;
+      padding: 0;
+      line-height: 1.2;
+      word-wrap: break-word;
+      max-height: 52px;
+      overflow: hidden
+    }
+
+    .category-card img {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 90px;
+      height: 90px;
+      transform: rotate(25deg) translate(18%, -2%);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, .3);
+      border-radius: 4px
+    }
+
+    .card-pop {
+      background-color: #8D67AB
+    }
+
+    .card-hiphop {
+      background-color: #BC5900
+    }
+
+    .card-rock {
+      background-color: #E13400
+    }
+
+    .card-dance {
+      background-color: #1A92EE
+    }
+
+    .card-happy {
+      background-color: #E8115B
+    }
+
+    .card-house {
+      background-color: #006450
+    }
+
+    .card-twentytens {
+      background-color: #148C72
+    }
+
+    .card-twentytwenties {
+      background-color: #1E3264
+    }
+
+    .card-upbeat {
+      background-color: #5038A0
+    }
+
+    .card-newreleases {
+      background-color: #B23D1F
+    }
+
+    .card-discover {
+      background-color: #BA3D4D
+    }
+
+    .card-charts {
+      background-color: #8D67AB
+    }
+
+    .card-podcasts {
+      background-color: #006450
+    }
+
+    .player-bar {
+      background-color: var(--spotify-dark-grey);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      box-sizing: border-box;
+      border-top: 1px solid var(--spotify-black);
+      min-height: 90px
+    }
+
+    .player-bar .song-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 20%
+    }
+
+    .player-bar .song-info img {
+      width: 60px;
+      height: 60px;
+      border-radius: 4px
+    }
+
+    .player-bar .song-details h4 {
+      color: var(--spotify-white);
+      margin: 0;
+      font-size: 15px
+    }
+
+    .player-bar .song-details p {
+      color: var(--spotify-text-color);
+      margin: 0;
+      font-size: 12px
+    }
+
+    .player-bar .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 60%
+    }
+
+    .player-bar .control-buttons {
+      display: flex;
+      gap: 20px
+    }
+
+    .player-bar .control-buttons button {
+      background: none;
+      border: none;
+      color: var(--spotify-text-color);
+      font-size: 20px;
+      cursor: pointer;
+      transition: color .3s ease
+    }
+
+    .player-bar .control-buttons button:hover {
+      color: var(--spotify-white)
+    }
+
+    .player-bar .control-buttons button.play-pause i {
+      font-size: 32px;
+      color: var(--spotify-white)
+    }
+
+    .player-bar .progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%
+    }
+
+    .player-bar .progress-bar span {
+      font-size: 12px;
+      color: var(--spotify-text-color)
+    }
+
+    .player-bar .progress-bar .bar {
+      flex: 1;
+      height: 4px;
+      background-color: #535353;
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer
+    }
+
+    .player-bar .progress-bar .bar .progress {
+      width: 30%;
+      height: 100%;
+      background-color: var(--spotify-green);
+      border-radius: 2px;
+      position: relative
+    }
+
+    .player-bar .progress-bar .bar .progress::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translate(50%, -50%);
+      width: 12px;
+      height: 12px;
+      background-color: var(--spotify-white);
+      border-radius: 50%;
+      display: none
+    }
+
+    .player-bar .progress-bar .bar:hover .progress::after {
+      display: block
+    }
+
+    .player-bar .volume-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 20%;
+      justify-content: flex-end
+    }
+
+    .player-bar .volume-controls button {
+      background: none;
+      border: none;
+      color: var(--spotify-text-color);
+      font-size: 18px;
+      cursor: pointer;
+      transition: color .3s ease
+    }
+
+    .player-bar .volume-controls button:hover {
+      color: var(--spotify-white)
+    }
+
+    .player-bar .volume-controls .volume-bar {
+      width: 80px;
+      height: 4px;
+      background-color: #535353;
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer
+    }
+
+    .player-bar .volume-controls .volume-bar .volume {
+      width: 70%;
+      height: 100%;
+      background-color: var(--spotify-green);
+      border-radius: 2px
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/2560px-Spotify_logo_with_text.svg.png" alt="Spotify Logo"></div>
+      <nav>
+        <ul>
+          <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="search.html" class="active"><i class="fas fa-search"></i> Search</a></li>
+          <li><a href="#"><i class="fas fa-grip-lines"></i> Your Library</a></li>
+        </ul>
+      </nav>
+      <div class="playlists">
+        <h3>Playlists</h3>
+        <ul>
+          <li><a href="#" class="playlist-item"><i class="fas fa-plus-square"></i> Create Playlist</a></li>
+          <li><a href="#" class="playlist-item"><i class="fas fa-heart"></i> Liked Songs</a></li>
+        </ul>
+        <hr style="border-color:#282828;margin:15px 0;">
+        <div class="playlist-list"><a href="#" class="playlist-item">My Playlist #1</a><a href="#" class="playlist-item">Workout Mix</a><a href="#" class="playlist-item">Chill Vibes</a><a href="#" class="playlist-item">Road Trip Anthems</a><a href="#" class="playlist-item">Discover Weekly</a><a href="#" class="playlist-item">Focus Music</a><a href="#" class="playlist-item">Party Hits</a><a href="#" class="playlist-item">Morning Drive</a><a href="#" class="playlist-item">Sleep Sounds</a><a href="#" class="playlist-item">New Releases</a><a href="#" class="playlist-item">Instrumentals</a><a href="#" class="playlist-item">Coding Soundtrack</a><a href="#" class="playlist-item">Classical Favorites</a><a href="#" class="playlist-item">Jazz Legends</a><a href="#" class="playlist-item">Pop Essentials</a><a href="#" class="playlist-item">Rock Classics</a></div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="search-header">
+        <div class="nav-buttons"><button><i class="fas fa-chevron-left"></i></button><button><i class="fas fa-chevron-right"></i></button></div>
+        <div class="search-input-wrapper"><i class="fas fa-search"></i><input type="text" placeholder="What do you want to listen to?"></div>
+        <div class="user-profile"><button>Explore Premium</button><button>Install App</button>
+          <div class="profile-dropdown"><img src="https://jessehoekema.com/assets/pfp_new.png" alt="User Avatar"><span>Jessi Flessi</span><i class="fas fa-caret-down"></i></div>
+        </div>
+      </div>
+      <h2>Browse all</h2>
+      <div class="browse-categories-grid">
+        <div class="category-card card-pop">
+          <h3>Pop</h3><img src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/topic/pop/1HY2Jd0NmPuamShAr6KMms/en" alt="Pop">
+        </div>
+        <div class="category-card card-hiphop">
+          <h3>Hip Hop</h3><img src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/topic/hip_hop/2o5jDhtHVPhrJdv3cEQ99Z/en" alt="Hip Hop">
+        </div>
+        <div class="category-card card-dance">
+          <h3>Dance/Electronic</h3><img src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/topic/dance_electronic/1VJ0briNOlXRtJUAzoUJdt/en" alt="Dance/Electronic">
+        </div>
+        <div class="category-card card-happy">
+          <h3>Happy</h3><img src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/topic/happy/2urF8dgLVfDjunO0pcHUEe/en" alt="Happy">
+        </div>
+        <div class="category-card card-house">
+          <h3>House</h3><img src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/topic/house/7xfEjDr3c7DIUoW0qf6s0A/en" alt="House">
+        </div>
+        <div class="category-card card-twentytens">
+          <h3>2010s</h3><img src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/topic/twenty_tens/0id62QV2SZZfvBn9xpmuCl/en" alt="2010s">
+        </div>
+        <div class="category-card card-twentytwenties">
+          <h3>2020s</h3><img src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/topic/twenty_twenties/5yOvAmpIR7hVxiS6Ls5DPO/en" alt="2020s">
+        </div>
+        <div class="category-card card-upbeat">
+          <h3>Upbeat</h3><img src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/topic/upbeat/6QMABvTzixnxzsLYyhqRxI/en" alt="Upbeat">
+        </div>
+        <div class="category-card card-newreleases" style="background-color:#006450;">
+          <h3>New Releases</h3><img src="https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5eb07eb453c0d51f54c83cca4ef/en" alt="New Releases">
+        </div>
+        <div class="category-card card-discover" style="background-color:#BA3D4D;">
+          <h3>Discover</h3><img src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/dw/cover/en" alt="Discover Weekly">
+        </div>
+        <div class="category-card card-charts" style="background-color:#8D67AB;">
+          <h3>Charts</h3><img src="https://i.scdn.co/image/ab67706f0000000262e0a872debf0525e464edbb" alt="Charts">
+        </div>
+        <div class="category-card card-podcasts" style="background-color:#006450;">
+          <h3>Podcasts</h3><img src="https://i.scdn.co/image/ab67706f00000002518096c62a9e453db38093db" alt="Podcasts">
+        </div>
+        <div class="category-card" style="background-color:#1DB954;">
+          <h3>Workout</h3>
+        </div>
+        <div class="category-card" style="background-color:#27856A;">
+          <h3>Focus</h3>
+        </div>
+        <div class="category-card" style="background-color:#AF2896;">
+          <h3>Rock</h3>
+        </div>
+        <div class="category-card" style="background-color:#8D67AB;">
+          <h3>R&B</h3>
+        </div>
+        <div class="category-card" style="background-color:#007262;">
+          <h3>Decades</h3>
+        </div>
+        <div class="category-card" style="background-color:#5038A0;">
+          <h3>Student</h3>
+        </div>
+      </div>
+      <div style="height:100px;"></div>
+    </div>
+  </div>
+  <div class="player-bar">
+    <div class="song-info"><img src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/topic/twenty_twenties/5yOvAmpIR7hVxiS6Ls5DPO/en" alt="Current Song Cover">
+      <div class="song-details">
+        <h4>Let Me In</h4>
+        <p>Toontje</p>
+      </div><button style="background:none;border:none;color:var(--spotify-text-color);font-size:16px;margin-left:10px;"><i class="far fa-heart"></i></button>
+    </div>
+    <div class="controls">
+      <div class="control-buttons"><button><i class="fas fa-random"></i></button><button><i class="fas fa-step-backward"></i></button><button class="play-pause"><i class="fas fa-play-circle"></i></button><button><i class="fas fa-step-forward"></i></button><button><i class="fas fa-redo-alt"></i></button></div>
+      <div class="progress-bar"><span>0:30</span>
+        <div class="bar">
+          <div class="progress"></div>
+        </div><span>3:45</span>
+      </div>
+    </div>
+    <div class="volume-controls"><button><i class="fas fa-microphone-alt"></i></button><button><i class="fas fa-list-ul"></i></button><button><i class="fas fa-volume-up"></i></button>
+      <div class="volume-bar">
+        <div class="volume"></div>
+      </div><button><i class="fas fa-expand-alt"></i></button>
+    </div>
+  </div>
+  <script>
+    document.querySelectorAll('.player-bar .bar').forEach(bar => {
+      bar.addEventListener('click', function(e) {
+        const rect = this.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const percentage = (clickX / rect.width) * 100;
+        this.querySelector('.progress').style.width = percentage + '%';
+      })
+    });
+    document.querySelectorAll('.player-bar .volume-bar').forEach(bar => {
+      bar.addEventListener('click', function(e) {
+        const rect = this.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const percentage = (clickX / rect.width) * 100;
+        this.querySelector('.volume').style.width = percentage + '%';
+      })
+    });
+    const playPauseButton = document.querySelector('.play-pause');
+    playPauseButton.addEventListener('click', function() {
+      const icon = this.querySelector('i');
+      if (icon.classList.contains('fa-play-circle')) {
+        icon.classList.remove('fa-play-circle');
+        icon.classList.add('fa-pause-circle');
+      } else {
+        icon.classList.remove('fa-pause-circle');
+        icon.classList.add('fa-play-circle');
+      }
+    });
+    document.querySelector('.sidebar nav ul li a[href="index.html"]').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = 'index.html';
+    });
+    document.querySelector('.sidebar nav ul li a[href="search.html"]').addEventListener('click', function(e) {
+      e.preventDefault();
+    });
+  </script>
+</body>
+
+</html>
