@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yuski | Creative Portfolio</title>
+  <style>
+    :root {
+      --primary-purple: hsl(270, 60%, 40%);
+      --light-purple: hsl(270, 80%, 75%);
+      --medium-purple: hsl(270, 40%, 60%);
+      --background-color: hsl(260, 20%, 10%);
+      --card-background: hsl(260, 20%, 15%);
+      --text-color: #f0f0f0;
+      --border-color: rgba(255, 255, 255, 0.08);
+      ;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      overflow-x: hidden;
+    }
+
+    header {
+      background: rgba(var(--primary-purple), 0.9);
+      color: var(--text-color);
+      padding: 1rem 0;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--light-purple);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li {
+      margin-left: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 1.1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      display: block;
+      margin-top: 5px;
+      right: 0;
+      background: var(--light-purple);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+      left: 0;
+      background: var(--light-purple);
+    }
+
+    .nav-links a:hover {
+      color: var(--light-purple);
+    }
+
+    .burger {
+      display: none;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .burger div {
+      width: 2rem;
+      height: 0.2rem;
+      background: var(--text-color);
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, var(--background-color) 0%, var(--primary-purple) 100%);
+      padding-top: 60px;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .hero h1 {
+      font-size: 4.5rem;
+      margin-bottom: 1rem;
+      color: var(--light-purple);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-color);
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--light-purple);
+      color: var(--background-color);
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:hover {
+      background: var(--primary-purple);
+      color: var(--light-purple);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* General Section Styling */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+      background-color: var(--background-color);
+    }
+
+    section h2 {
+      font-size: 2.8rem;
+      margin-bottom: 3rem;
+      color: var(--light-purple);
+      position: relative;
+      display: inline-block;
+    }
+
+    section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--primary-purple);
+      border-radius: 5px;
+    }
+
+    /* Portfolio Section */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .portfolio-item {
+      background-color: var(--card-background);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 1.5rem;
+    }
+
+    .portfolio-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .portfolio-item img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .portfolio-item h3 {
+      font-size: 1.6rem;
+      margin-top: 1.5rem;
+      color: var(--light-purple);
+    }
+
+    .portfolio-item p {
+      font-size: 1rem;
+      color: rgba(var(--text-color), 0.8);
+      margin-top: 0.5rem;
+    }
+
+    /* About Section */
+    .about-section {
+      background-color: var(--card-background);
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      margin-top: 4rem;
+    }
+
+    .about-content {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .profile-pic {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 2rem;
+      border: 5px solid var(--light-purple);
+      box-shadow: 0 0 20px rgba(var(--light-purple), 0.5);
+    }
+
+    .about-content h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      color: var(--light-purple);
+    }
+
+    .about-content p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    /* Contact Section */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      max-width: 600px;
+      margin: 0 auto;
+      gap: 1.5rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      background-color: var(--card-background);
+      border: 1px solid var(--border-color);
+      padding: 1rem 1.2rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      color: var(--text-color);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: rgba(var(--text-color), 0.6);
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--light-purple);
+      box-shadow: 0 0 0 3px rgba(var(--light-purple), 0.3);
+    }
+
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+
+    .contact-form .btn {
+      align-self: flex-start;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary-purple);
+      color: var(--text-color);
+      padding: 2rem;
+      text-align: center;
+      margin-top: 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    .social-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 1.2rem;
+      margin-left: 1.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--light-purple);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .nav-links {
+        position: absolute;
+        right: 0;
+        height: 92vh;
+        top: 8vh;
+        background-color: var(--primary-purple);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+        transform: translateX(100%);
+        transition: transform 0.5s ease-in;
+        padding-top: 2rem;
+      }
+
+      .nav-links.nav-active {
+        transform: translateX(0%);
+      }
+
+      .nav-links li {
+        opacity: 0;
+        margin: 1.5rem 0;
+      }
+
+      .burger {
+        display: flex;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-content p {
+        text-align: center;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .social-links {
+        margin-top: 1rem;
+      }
+    }
+
+    /* Burger Animation */
+    .toggle .line1 {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .toggle .line2 {
+      opacity: 0;
+    }
+
+    .toggle .line3 {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    @keyframes navLinkFade {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <div class="logo">Yuski</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="burger">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+    </nav>
+  </header>
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1>Yuski</h1>
+      <p>Crafting Visually Stunning Experiences</p><a href="#portfolio" class="btn">View My Work</a>
+    </div>
+  </section>
+  <section id="portfolio" class="portfolio-section">
+    <h2>My Creative Work</h2>
+    <div class="portfolio-grid">
+      <div class="portfolio-item"><img src="https://via.placeholder.com/400x300/6A0DAD/FFFFFF?text=Project+1" alt="Digital Art Showcase">
+        <h3>Digital Art Showcase</h3>
+        <p>Illustration & Concept</p>
+      </div>
+      <div class="portfolio-item"><img src="https://via.placeholder.com/400x300/8A2BE2/FFFFFF?text=Project+2" alt="Branding Identity">
+        <h3>Branding Identity</h3>
+        <p>Logo & Guidelines</p>
+      </div>
+      <div class="portfolio-item"><img src="https://via.placeholder.com/400x300/9370DB/FFFFFF?text=Project+3" alt="UI/UX Design">
+        <h3>UI/UX Design</h3>
+        <p>App Interface</p>
+      </div>
+      <div class="portfolio-item"><img src="https://via.placeholder.com/400x300/B19CD9/FFFFFF?text=Project+4" alt="Web Development">
+        <h3>Web Development</h3>
+        <p>Interactive Site</p>
+      </div>
+      <div class="portfolio-item"><img src="https://via.placeholder.com/400x300/C8A2C8/FFFFFF?text=Project+5" alt="Print Media Layout">
+        <h3>Print Media Layout</h3>
+        <p>Magazine Design</p>
+      </div>
+      <div class="portfolio-item"><img src="https://via.placeholder.com/400x300/D291BC/FFFFFF?text=Project+6" alt="3D Rendering">
+        <h3>3D Rendering</h3>
+        <p>Product Visualization</p>
+      </div>
+    </div>
+  </section>
+  <section id="about" class="about-section">
+    <div class="about-content"><img src="https://via.placeholder.com/200/9932CC/FFFFFF?text=Yuski" alt="Yuski Profile" class="profile-pic">
+      <h2>About Yuski</h2>
+      <p>Hello! I'm Yuski, a passionate and innovative designer with a keen eye for aesthetics and functionality. With X years of experience in various design disciplines, I specialize in creating engaging visual narratives, whether it's through captivating digital art, intuitive user interfaces, or impactful brand identities. My approach blends creativity with strategic thinking to deliver designs that not only look good but also achieve their intended purpose. I believe in the power of design to solve problems and connect with audiences on a deeper level.</p>
+      <p>Let's create something extraordinary together.</p>
+    </div>
+  </section>
+  <section id="contact" class="contact-section">
+    <h2>Get In Touch</h2>
+    <form class="contact-form"><input type="text" placeholder="Your Name" required><input type="email" placeholder="Your Email" required><textarea placeholder="Your Message" rows="6" required></textarea><button type="submit" class="btn">Send Message</button></form>
+  </section>
+  <footer>
+    <p>&copy; 2023 Yuski. All rights reserved.</p>
+    <div class="social-links"><a href="#">Fb</a><a href="#">Ig</a><a href="#">Lk</a></div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const burger = document.querySelector('.burger');
+      const nav = document.querySelector('.nav-links');
+      const navLinks = document.querySelectorAll('.nav-links li');
+      burger.addEventListener('click', () => {
+        nav.classList.toggle('nav-active');
+        navLinks.forEach((link, index) => {
+          if (link.style.animation) {
+            link.style.animation = '';
+          } else {
+            link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+          }
+        });
+        burger.classList.toggle('toggle');
+      });
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (nav.classList.contains('nav-active')) {
+            nav.classList.remove('nav-active');
+            burger.classList.remove('toggle');
+            navLinks.forEach((item) => {
+              item.style.animation = '';
+            });
+          }
+        });
+      });
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
