@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grub - Important Announcement</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-red: #e0423e;
+      --primary-orange: #f58442;
+      --text-dark: #1a1a1a;
+      --text-medium: #333333;
+      --text-light: #707070;
+      --bg-light: #f7f7f7;
+      --card-bg: #ffffff;
+      --border-color: #e8e8e8;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.1);
+      --gradient-main: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-orange) 100%);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-light);
+      color: var(--text-medium);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      box-sizing: border-box;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body.fade-in {
+      opacity: 1;
+    }
+
+    .wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 30px;
+      box-sizing: border-box;
+    }
+
+    header {
+      width: 100%;
+      background: var(--gradient-main);
+      color: #fff;
+      padding: 100px 20px;
+      text-align: center;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo {
+      font-size: 5.5rem;
+      font-weight: 800;
+      margin: 0;
+      letter-spacing: -0.06em;
+      text-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      line-height: 1;
+      margin-bottom: 25px;
+    }
+
+    .header-tagline {
+      font-size: 2.2rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.95);
+      margin-top: 0;
+      max-width: 700px;
+      line-height: 1.35;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    main {
+      flex-grow: 1;
+      width: 100%;
+      padding: 60px 0;
+      box-sizing: border-box;
+    }
+
+    .announcement,
+    .faq-section {
+      background: var(--card-bg);
+      border-radius: 25px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 50px;
+      padding: 60px 80px;
+      position: relative;
+    }
+
+    .announcement h2 {
+      font-size: 3.6rem;
+      color: var(--text-dark);
+      margin-top: 0;
+      margin-bottom: 35px;
+      font-weight: 800;
+      line-height: 1.15;
+      text-align: center;
+      letter-spacing: -.04em;
+    }
+
+    .announcement p {
+      font-size: 1.25rem;
+      margin-bottom: 30px;
+      color: var(--text-medium);
+      line-height: 1.8;
+      max-width: 750px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .announcement p strong {
+      color: var(--primary-red);
+      font-weight: 700;
+    }
+
+    .announcement .support-email {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 15px 30px;
+      background: var(--primary-orange);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 15px rgba(245, 132, 66, 0.3);
+    }
+
+    .announcement .support-email:hover {
+      background: var(--primary-red);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(224, 66, 62, 0.4);
+    }
+
+    .announcement .team-signature {
+      margin-top: 50px;
+      text-align: center;
+      font-style: normal;
+      color: var(--text-light);
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .faq-section {
+      padding-top: 60px;
+    }
+
+    .faq-section h3 {
+      font-size: 3.2rem;
+      color: var(--text-dark);
+      margin-bottom: 45px;
+      text-align: center;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .faq-item {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item.active {
+      box-shadow: var(--shadow-sm);
+      border-color: var(--primary-orange);
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 30px;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      background-color: var(--card-bg);
+      border: none;
+      width: 100%;
+      text-align: left;
+      transition: background-color 0.3s ease;
+    }
+
+    .faq-question:hover {
+      background-color: #fcfcfc;
+    }
+
+    .faq-question .icon {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      min-height: 28px;
+      border: 2px solid var(--text-light);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--text-light);
+      transition: transform 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .faq-item.active .faq-question .icon {
+      transform: rotate(45deg);
+      border-color: var(--primary-orange);
+      color: var(--primary-orange);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+      padding: 0 30px;
+      color: var(--text-medium);
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+      padding: 10px 30px 30px;
+    }
+
+    .faq-answer p {
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+
+    .faq-answer p:last-child {
+      margin-bottom: 0;
+    }
+
+    footer {
+      width: 100%;
+      background-color: var(--text-dark);
+      color: #e0e0e0;
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 60px;
+      font-size: 0.95rem;
+    }
+
+    footer a {
+      color: var(--primary-orange);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    footer a:hover {
+      color: var(--primary-red);
+    }
+
+    @media (max-width: 768px) {
+      .wrapper {
+        padding: 0 20px;
+      }
+
+      header {
+        padding: 80px 20px;
+        min-height: 300px;
+      }
+
+      .logo {
+        font-size: 4rem;
+        margin-bottom: 20px;
+      }
+
+      .header-tagline {
+        font-size: 1.6rem;
+        max-width: 90%;
+      }
+
+      .announcement,
+      .faq-section {
+        padding: 40px 30px;
+        margin-bottom: 30px;
+      }
+
+      .announcement h2 {
+        font-size: 2.5rem;
+        margin-bottom: 25px;
+      }
+
+      .announcement p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+      }
+
+      .announcement .support-email {
+        font-size: 1.1rem;
+        padding: 12px 25px;
+        margin-top: 30px;
+      }
+
+      .announcement .team-signature {
+        margin-top: 35px;
+        font-size: 1rem;
+      }
+
+      .faq-section h3 {
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+      }
+
+      .faq-question {
+        padding: 20px 25px;
+        font-size: 1.1rem;
+      }
+
+      .faq-question .icon {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        min-height: 24px;
+        font-size: 1.2rem;
+      }
+
+      .faq-item.active .faq-answer {
+        padding: 5px 25px 25px;
+      }
+
+      .faq-answer {
+        font-size: 1rem;
+        padding: 0 25px;
+      }
+
+      footer {
+        padding: 30px 20px;
+        margin-top: 40px;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 60px 15px;
+        min-height: 250px;
+      }
+
+      .logo {
+        font-size: 3rem;
+      }
+
+      .header-tagline {
+        font-size: 1.3rem;
+        max-width: 95%;
+      }
+
+      .announcement,
+      .faq-section {
+        padding: 30px 20px;
+      }
+
+      .announcement h2 {
+        font-size: 2rem;
+      }
+
+      .announcement p {
+        font-size: 0.95rem;
+      }
+
+      .announcement .support-email {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+
+      .faq-section h3 {
+        font-size: 1.8rem;
+      }
+
+      .faq-question {
+        font-size: 1rem;
+        padding: 15px 20px;
+      }
+
+      .faq-question .icon {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        min-height: 20px;
+        font-size: 1rem;
+      }
+
+      .faq-item.active .faq-answer {
+        padding: 0 20px 20px;
+      }
+
+      .faq-answer {
+        font-size: 0.9rem;
+        padding: 0 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">Grub</div>
+    <p class="header-tagline">Serving you one last time with an important update.</p>
+  </header>
+  <main>
+    <div class="wrapper">
+      <section class="announcement">
+        <h2>A Heartfelt Goodbye from Grub</h2>
+        <p>It is with heavy hearts that we announce the shutdown of Grub, your beloved food delivery platform. This was a difficult decision, but after careful consideration, we have decided to cease all operations on <strong>August 28, 2025</strong>.</p>
+        <p>We are incredibly grateful for the trust you placed in us to deliver your favorite meals. Over the years, you've supported countless local restaurants and our dedicated delivery partners, and for that, we extend our sincerest thanks.</p>
+        <p>We understand this news may come as a surprise, and we are committed to ensuring a smooth transition for everyone. Please refer to the FAQ section below for information regarding your accounts, outstanding orders, and any remaining Grub credits.</p>
+        <p>Thank you for being a part of the Grub community. It's been a privilege to serve you.</p>
+        <p style="text-align: center;">If you have any further questions, please reach out to us:</p> <a href="mailto:grubfood@proton.me" class="support-email">Contact Support: grubfood@proton.me</a>
+        <p class="team-signature">The Grub Team</p>
+      </section>
+      <section class="faq-section">
+        <h3>Frequently Asked Questions</h3>
+        <div class="faq-list">
+          <div class="faq-item"> <button class="faq-question"> <span>When will Grub officially shut down?</span> <span class="icon">+</span> </button>
+            <div class="faq-answer">
+              <p>Grub will officially cease all operations on <strong>August 28, 2025</strong>. This means you will no longer be able to place new orders or access your account after this date.</p>
+            </div>
+          </div>
+          <div class="faq-item"> <button class="faq-question"> <span>What happens to my Grub account and personal data?</span> <span class="icon">+</span> </button>
+            <div class="faq-answer">
+              <p>Following the shutdown date, all Grub accounts and associated personal data will be permanently deleted in accordance with our privacy policy and applicable data protection regulations. We recommend downloading any order history you wish to keep before August 28, 2025.</p>
+            </div>
+          </div>
+          <div class="faq-item"> <button class="faq-question"> <span>What about my remaining Grub credits or gift cards?</span> <span class="icon">+</span> </button>
+            <div class="faq-answer">
+              <p>Any unused Grub credits or gift card balances must be redeemed before <strong>August 28, 2025</strong>. We encourage you to use them on your favorite meals before the platform closes. Unfortunately, we will not be able to offer refunds for unredeemed credits or gift cards after this date.</p>
+            </div>
+          </div>
+          <div class="faq-item"> <button class="faq-question"> <span>Will I still receive orders I've already placed?</span> <span class="icon">+</span> </button>
+            <div class="faq-answer">
+              <p>All orders placed and confirmed before the shutdown date will be honored and delivered as usual. If you have a scheduled order for a date past August 28, 2025, it will be automatically canceled and refunded. Please ensure any future orders are placed and delivered before the shutdown.</p>
+            </div>
+          </div>
+          <div class="faq-item"> <button class="faq-question"> <span>What if I have an issue with a recent order after the shutdown?</span> <span class="icon">+</span> </button>
+            <div class="faq-answer">
+              <p>For a limited period after August 28, 2025, our support team will still be available to assist with issues related to orders placed *before* the shutdown. Please contact us at <a href="mailto:grubfood@proton.me">grubfood@proton.me</a> for assistance.</p>
+            </div>
+          </div>
+          <div class="faq-item"> <button class="faq-question"> <span>Are there any alternative food delivery platforms you recommend?</span> <span class="icon">+</span> </button>
+            <div class="faq-answer">
+              <p>While we can't officially endorse specific platforms, we encourage you to explore other popular food delivery services available in your area to continue enjoying convenient meal delivery.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer>
+    <div class="wrapper">
+      <p>&copy; 2024 Grub. All rights reserved. <br> Thank you for being a part of our journey. If you need support, please email <a href="mailto:grubfood@proton.me">grubfood@proton.me</a></p>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add('fade-in');
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+          faqItems.forEach(otherItem => {
+            if (otherItem !== item && otherItem.classList.contains('active')) {
+              otherItem.classList.remove('active');
+              const otherAnswer = otherItem.querySelector('.faq-answer');
+              otherAnswer.style.maxHeight = 0;
+            }
+          });
+          item.classList.toggle('active');
+          const answer = item.querySelector('.faq-answer');
+          if (item.classList.contains('active')) {
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+          } else {
+            answer.style.maxHeight = 0;
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
