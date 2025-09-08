@@ -3,165 +3,209 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive Science Particles</title>
+<title>Interactive Science Particles with Styled Controls</title>
 <style>
-  body, html {
+  body {
     margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, #0a0f1a, #05070e, #000);
     overflow: hidden;
-    font-family: sans-serif;
-    color: white;
+    background: radial-gradient(circle at center, #0d0d0d, #000);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
   }
   canvas {
     display: block;
   }
-  .controls {
+  #controls {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(0,0,0,0.5);
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 12px;
+    top: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.6);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    width: 220px;
   }
-  .controls button, .controls input {
-    margin: 2px;
+  #controls h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    text-align: center;
+    color: #ffcc00;
+  }
+  #controls label {
+    display: block;
+    margin: 15px 0 5px;
+    font-size: 14px;
+    color: #fff;
+  }
+  #controls input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #444;
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s;
+  }
+  #controls input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ffcc00;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    transition: background 0.3s, transform 0.2s;
+  }
+  #controls input[type=range]::-webkit-slider-thumb:hover {
+    background: #ffaa00;
+    transform: scale(1.2);
+  }
+  #controls span {
+    float: right;
+    font-weight: bold;
+    color: #ffcc00;
   }
 </style>
 </head>
 <body>
-<canvas id="canvas"></canvas>
-<div class="controls">
-  <button id="add10">+10</button>
-  <button id="clear">Clear</button>
-  <button id="toggleAttract">Attract: ON</button>
-  <button id="togglePlay">Pause</button>
-  <label>Speed <input type="range" id="speedRange" min="0.2" max="3" step="0.1" value="1"></label>
-  <label>Count <input type="range" id="countRange" min="0" max="600" value="120"></label>
+<canvas id="particleCanvas"></canvas>
+
+<div id="controls">
+  <h2>Particle Controls</h2>
+  <label>Count: <span id="countValue">100</span>
+    <input type="range" id="count" min="10" max="300" value="100">
+  </label>
+  <label>Size: <span id="sizeValue">4</span>
+    <input type="range" id="size" min="1" max="10" value="4">
+  </label>
+  <label>Speed: <span id="speedValue">1</span>
+    <input type="range" id="speed" min="0.1" max="5" step="0.1" value="1">
+  </label>
+  <label>Link Distance: <span id="linkValue">120</span>
+    <input type="range" id="link" min="50" max="300" value="120">
+  </label>
 </div>
+
 <script>
-const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
-let particles = [];
-let running = true;
-let attractMode = true;
-let speedMultiplier = 1;
-let mouse = { x: 0, y: 0, down: false, dragging: null };
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
-
-class Particle {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.r = 3 + Math.random() * 4;
-    const s = 0.3 + Math.random() * 0.7;
-    const ang = Math.random() * Math.PI * 2;
-    this.vx = Math.cos(ang) * s;
-    this.vy = Math.sin(ang) * s;
-    this.h = Math.floor(Math.random() * 360);
-    this.alpha = 0.8;
-  }
-  update(dt) {
-    this.x += this.vx * dt * speedMultiplier;
-    this.y += this.vy * dt * speedMultiplier;
-    if (this.x < -50) this.x = canvas.width + 50;
-    if (this.x > canvas.width + 50) this.x = -50;
-    if (this.y < -50) this.y = canvas.height + 50;
-    if (this.y > canvas.height + 50) this.y = -50;
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.fillStyle = `hsla(${this.h}, 75%, 60%, ${this.alpha})`;
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = `hsla(${this.h}, 80%, 45%, 0.25)`;
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  }
-}
-
-function initParticles(count) {
-  particles = [];
-  for (let i = 0; i < count; i++) {
-    particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
-  }
-}
-initParticles(120);
-
-function animate(time) {
-  if (!running) return;
-  ctx.fillStyle = 'rgba(5,7,14,0.12)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  for (let i = 0; i < particles.length; i++) {
-    const a = particles[i];
-    // mouse attraction/repel
-    if ((mouse.down || mouse.dragging !== null || Math.abs(mouse.x) > 0) && attractMode) {
-      const dx = mouse.x - a.x;
-      const dy = mouse.y - a.y;
-      const dist = Math.sqrt(dx*dx + dy*dy)+0.0001;
-      const radius = 140;
-      if (dist < radius) {
-        const force = (1 - dist/radius) * 0.6;
-        const nx = dx/dist;
-        const ny = dy/dist;
-        if(mouse.dragging===a){ a.x=mouse.x; a.y=mouse.y; a.vx=0; a.vy=0; }
-        else { const sign = mouse.down?-1:1; a.vx+=nx*force*sign; a.vy+=ny*force*sign; }
-      }
-    }
-    a.update(1);
-  }
-
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i+1; j < particles.length; j++) {
-      const a = particles[i];
-      const b = particles[j];
-      const dx = a.x - b.x;
-      const dy = a.y - b.y;
-      const d2 = dx*dx+dy*dy;
-      const maxD=120;
-      if(d2<maxD*maxD){
-        const alpha = 0.18*(1-Math.sqrt(d2)/maxD);
-        ctx.strokeStyle = `hsla(${(a.h+b.h)/2},78%,55%,${alpha})`;
-        ctx.lineWidth=0.8;
-        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-      }
-    }
-  }
-
-  particles.forEach(p=>p.draw());
-  requestAnimationFrame(animate);
-}
-animate();
-
-canvas.addEventListener('mousemove', e=>{ mouse.x=e.clientX; mouse.y=e.clientY; });
-canvas.addEventListener('mousedown', e=>{
-  mouse.down=true;
-  let nearest=null; let nd=9999;
-  for (let p of particles){
-    const dx=p.x-e.clientX, dy=p.y-e.clientY, d=Math.sqrt(dx*dx+dy*dy);
-    if(d<nd && d<30){ nearest=p; nd=d; }
-  }
-  mouse.dragging=nearest;
-});
-window.addEventListener('mouseup', ()=>{ mouse.down=false; mouse.dragging=null; });
+const mouse = { x: null, y: null, radius: 100 };
+window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
+window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
 
 // Controls
-document.getElementById('add10').onclick = ()=>{ for(let i=0;i<10;i++) particles.push(new Particle(Math.random()*canvas.width, Math.random()*canvas.height)); }; 
-document.getElementById('clear').onclick = ()=>{ particles=[]; };
-document.getElementById('toggleAttract').onclick = e=>{ attractMode=!attractMode; e.target.textContent=`Attract: ${attractMode?'ON':'OFF'}`; };
-document.getElementById('togglePlay').onclick = e=>{ running=!running; if(running) animate(); e.target.textContent = running?'Pause':'Play'; };
-document.getElementById('speedRange').oninput = e=>{ speedMultiplier=parseFloat(e.target.value); };
-document.getElementById('countRange').oninput = e=>{ initParticles(parseInt(e.target.value)); };
+const countSlider = document.getElementById('count');
+const sizeSlider = document.getElementById('size');
+const speedSlider = document.getElementById('speed');
+const linkSlider = document.getElementById('link');
+
+const countValue = document.getElementById('countValue');
+const sizeValue = document.getElementById('sizeValue');
+const speedValue = document.getElementById('speedValue');
+const linkValue = document.getElementById('linkValue');
+
+let particleCount = +countSlider.value;
+let particleSize = +sizeSlider.value;
+let particleSpeed = +speedSlider.value;
+let linkDistance = +linkSlider.value;
+
+countSlider.oninput = () => { particleCount = +countSlider.value; countValue.textContent = particleCount; init(); };
+sizeSlider.oninput = () => { particleSize = +sizeSlider.value; sizeValue.textContent = particleSize; init(); };
+speedSlider.oninput = () => { particleSpeed = +speedSlider.value; speedValue.textContent = particleSpeed; updateSpeed(); };
+linkSlider.oninput = () => { linkDistance = +linkSlider.value; linkValue.textContent = linkDistance; };
+
+class Particle {
+  constructor(x, y, size, color, velocity) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.color = color;
+    this.velocity = velocity;
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+
+  update(particles) {
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
+
+    // Bounce off edges
+    if(this.x + this.size > canvas.width || this.x - this.size < 0) this.velocity.x = -this.velocity.x;
+    if(this.y + this.size > canvas.height || this.y - this.size < 0) this.velocity.y = -this.velocity.y;
+
+    // Mouse interaction
+    let dx = mouse.x - this.x;
+    let dy = mouse.y - this.y;
+    let dist = Math.sqrt(dx*dx + dy*dy);
+    if(dist < mouse.radius + this.size) {
+      const angle = Math.atan2(dy, dx);
+      const force = (mouse.radius - dist) / mouse.radius;
+      this.velocity.x -= force * Math.cos(angle);
+      this.velocity.y -= force * Math.sin(angle);
+    }
+
+    this.draw();
+  }
+}
+
+let particlesArray;
+
+function init() {
+  particlesArray = [];
+  for(let i=0; i<particleCount; i++) {
+    const size = particleSize;
+    const x = Math.random() * (canvas.width - size*2) + size;
+    const y = Math.random() * (canvas.height - size*2) + size;
+    const color = `hsl(${Math.random()*360}, 80%, 60%)`;
+    const velocity = { x: (Math.random()-0.5)*particleSpeed, y: (Math.random()-0.5)*particleSpeed };
+    particlesArray.push(new Particle(x, y, size, color, velocity));
+  }
+}
+
+function updateSpeed() {
+  particlesArray.forEach(p => {
+    p.velocity.x = (Math.random()-0.5)*particleSpeed;
+    p.velocity.y = (Math.random()-0.5)*particleSpeed;
+  });
+}
+
+function connectParticles() {
+  for(let a=0; a<particlesArray.length; a++) {
+    for(let b=a+1; b<particlesArray.length; b++) {
+      let dx = particlesArray[a].x - particlesArray[b].x;
+      let dy = particlesArray[a].y - particlesArray[b].y;
+      let distance = Math.sqrt(dx*dx + dy*dy);
+      if(distance < linkDistance) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(255,255,255,${1 - distance/linkDistance})`;
+        ctx.lineWidth = 1;
+        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+        ctx.stroke();
+        ctx.closePath();
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0,0,canvas.width, canvas.height);
+  particlesArray.forEach(p => p.update(particlesArray));
+  connectParticles();
+  requestAnimationFrame(animate);
+}
+
+init();
+animate();
 </script>
 </body>
 </html>
