@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Science Particles</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #0a0f1a, #05070e, #000);
+    overflow: hidden;
+    font-family: sans-serif;
+    color: white;
+  }
+  canvas {
+    display: block;
+  }
+  .controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+  .controls button, .controls input {
+    margin: 2px;
+  }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div class="controls">
+  <button id="add10">+10</button>
+  <button id="clear">Clear</button>
+  <button id="toggleAttract">Attract: ON</button>
+  <button id="togglePlay">Pause</button>
+  <label>Speed <input type="range" id="speedRange" min="0.2" max="3" step="0.1" value="1"></label>
+  <label>Count <input type="range" id="countRange" min="0" max="600" value="120"></label>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let running = true;
+let attractMode = true;
+let speedMultiplier = 1;
+let mouse = { x: 0, y: 0, down: false, dragging: null };
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.r = 3 + Math.random() * 4;
+    const s = 0.3 + Math.random() * 0.7;
+    const ang = Math.random() * Math.PI * 2;
+    this.vx = Math.cos(ang) * s;
+    this.vy = Math.sin(ang) * s;
+    this.h = Math.floor(Math.random() * 360);
+    this.alpha = 0.8;
+  }
+  update(dt) {
+    this.x += this.vx * dt * speedMultiplier;
+    this.y += this.vy * dt * speedMultiplier;
+    if (this.x < -50) this.x = canvas.width + 50;
+    if (this.x > canvas.width + 50) this.x = -50;
+    if (this.y < -50) this.y = canvas.height + 50;
+    if (this.y > canvas.height + 50) this.y = -50;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.fillStyle = `hsla(${this.h}, 75%, 60%, ${this.alpha})`;
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = `hsla(${this.h}, 80%, 45%, 0.25)`;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+}
+
+function initParticles(count) {
+  particles = [];
+  for (let i = 0; i < count; i++) {
+    particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+  }
+}
+initParticles(120);
+
+function animate(time) {
+  if (!running) return;
+  ctx.fillStyle = 'rgba(5,7,14,0.12)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  for (let i = 0; i < particles.length; i++) {
+    const a = particles[i];
+    // mouse attraction/repel
+    if ((mouse.down || mouse.dragging !== null || Math.abs(mouse.x) > 0) && attractMode) {
+      const dx = mouse.x - a.x;
+      const dy = mouse.y - a.y;
+      const dist = Math.sqrt(dx*dx + dy*dy)+0.0001;
+      const radius = 140;
+      if (dist < radius) {
+        const force = (1 - dist/radius) * 0.6;
+        const nx = dx/dist;
+        const ny = dy/dist;
+        if(mouse.dragging===a){ a.x=mouse.x; a.y=mouse.y; a.vx=0; a.vy=0; }
+        else { const sign = mouse.down?-1:1; a.vx+=nx*force*sign; a.vy+=ny*force*sign; }
+      }
+    }
+    a.update(1);
+  }
+
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i+1; j < particles.length; j++) {
+      const a = particles[i];
+      const b = particles[j];
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      const d2 = dx*dx+dy*dy;
+      const maxD=120;
+      if(d2<maxD*maxD){
+        const alpha = 0.18*(1-Math.sqrt(d2)/maxD);
+        ctx.strokeStyle = `hsla(${(a.h+b.h)/2},78%,55%,${alpha})`;
+        ctx.lineWidth=0.8;
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+    }
+  }
+
+  particles.forEach(p=>p.draw());
+  requestAnimationFrame(animate);
+}
+animate();
+
+canvas.addEventListener('mousemove', e=>{ mouse.x=e.clientX; mouse.y=e.clientY; });
+canvas.addEventListener('mousedown', e=>{
+  mouse.down=true;
+  let nearest=null; let nd=9999;
+  for (let p of particles){
+    const dx=p.x-e.clientX, dy=p.y-e.clientY, d=Math.sqrt(dx*dx+dy*dy);
+    if(d<nd && d<30){ nearest=p; nd=d; }
+  }
+  mouse.dragging=nearest;
+});
+window.addEventListener('mouseup', ()=>{ mouse.down=false; mouse.dragging=null; });
+
+// Controls
+document.getElementById('add10').onclick = ()=>{ for(let i=0;i<10;i++) particles.push(new Particle(Math.random()*canvas.width, Math.random()*canvas.height)); }; 
+document.getElementById('clear').onclick = ()=>{ particles=[]; };
+document.getElementById('toggleAttract').onclick = e=>{ attractMode=!attractMode; e.target.textContent=`Attract: ${attractMode?'ON':'OFF'}`; };
+document.getElementById('togglePlay').onclick = e=>{ running=!running; if(running) animate(); e.target.textContent = running?'Pause':'Play'; };
+document.getElementById('speedRange').oninput = e=>{ speedMultiplier=parseFloat(e.target.value); };
+document.getElementById('countRange').oninput = e=>{ initParticles(parseInt(e.target.value)); };
+</script>
+</body>
+</html>
