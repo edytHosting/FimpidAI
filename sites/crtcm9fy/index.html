@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twitter / X Clone</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      background-color: #fff;
+      color: #0F1419;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh
+    }
+
+    .app-container {
+      display: flex;
+      max-width: 1200px;
+      width: 100%;
+      border-left: 1px solid #EFF3F4;
+      border-right: 1px solid #EFF3F4
+    }
+
+    .sidebar-left {
+      width: 275px;
+      padding: 10px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #0F1419;
+      margin-bottom: 20px;
+      padding: 8px;
+      cursor: pointer
+    }
+
+    .main-nav {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-bottom: 20px
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 5px;
+      border-radius: 9999px;
+      color: #0F1419;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 700;
+      transition: background-color .2s
+    }
+
+    .nav-item:hover {
+      background-color: #E7E7E8
+    }
+
+    .nav-item.active {
+      color: #1DA1F2
+    }
+
+    .tweet-button {
+      background-color: #1DA1F2;
+      color: #fff;
+      border: none;
+      padding: 15px 0;
+      border-radius: 9999px;
+      font-size: 18px;
+      font-weight: bold;
+      width: 90%;
+      cursor: pointer;
+      transition: background-color .2s;
+      margin-top: 10px
+    }
+
+    .tweet-button:hover {
+      background-color: #1A8CD8
+    }
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 10px;
+      border-radius: 9999px;
+      margin-top: auto;
+      cursor: pointer;
+      transition: background-color .2s
+    }
+
+    .user-card:hover {
+      background-color: #E7E7E8
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px
+    }
+
+    .user-info {
+      flex-grow: 1
+    }
+
+    .user-name {
+      font-weight: bold;
+      font-size: 15px
+    }
+
+    .user-handle {
+      color: #536471;
+      font-size: 15px
+    }
+
+    .more-icon {
+      font-size: 20px;
+      color: #536471
+    }
+
+    .main-content {
+      flex-grow: 1;
+      max-width: 600px;
+      border-left: 1px solid #EFF3F4;
+      border-right: 1px solid #EFF3F4;
+      display: flex;
+      flex-direction: column
+    }
+
+    .main-header {
+      position: sticky;
+      top: 0;
+      background-color: rgba(255, 255, 255, .85);
+      backdrop-filter: blur(5px);
+      border-bottom: 1px solid #EFF3F4;
+      padding: 10px 15px;
+      z-index: 100
+    }
+
+    .main-header h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: bold
+    }
+
+    .main-header .tabs {
+      display: flex;
+      margin-top: 10px
+    }
+
+    .main-header .tab {
+      flex-grow: 1;
+      text-align: center;
+      padding: 15px 0;
+      color: #536471;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color .2s;
+      position: relative
+    }
+
+    .main-header .tab:hover {
+      background-color: #F7F9F9
+    }
+
+    .main-header .tab.active {
+      color: #0F1419
+    }
+
+    .main-header .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 4px;
+      background-color: #1DA1F2;
+      border-radius: 2px
+    }
+
+    .tweet-composer {
+      display: flex;
+      padding: 15px;
+      border-bottom: 1px solid #EFF3F4
+    }
+
+    .tweet-composer .user-avatar {
+      width: 48px;
+      height: 48px;
+      margin-right: 15px
+    }
+
+    .composer-input-area {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column
+    }
+
+    .composer-input-area textarea {
+      background-color: transparent;
+      border: none;
+      color: #0F1419;
+      font-size: 20px;
+      resize: none;
+      outline: none;
+      padding: 10px 0;
+      min-height: 50px
+    }
+
+    .composer-input-area textarea::placeholder {
+      color: #536471
+    }
+
+    .composer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      border-top: 1px solid #EFF3F4;
+      padding-top: 10px
+    }
+
+    .composer-actions .icons {
+      display: flex
+    }
+
+    .action-icon {
+      font-size: 20px;
+      color: #1DA1F2;
+      margin-right: 15px;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+      transition: background-color .2s
+    }
+
+    .action-icon:hover {
+      background-color: rgba(29, 161, 242, .1)
+    }
+
+    .post-button {
+      background-color: #1DA1F2;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color .2s
+    }
+
+    .post-button:hover {
+      background-color: #1A8CD8
+    }
+
+    .tweet-card {
+      display: flex;
+      padding: 15px;
+      border-bottom: 1px solid #EFF3F4;
+      cursor: pointer;
+      transition: background-color .2s
+    }
+
+    .tweet-card:hover {
+      background-color: #F7F9F9
+    }
+
+    .tweet-card .user-avatar {
+      width: 48px;
+      height: 48px;
+      margin-right: 15px;
+      flex-shrink: 0
+    }
+
+    .tweet-content {
+      flex-grow: 1
+    }
+
+    .tweet-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px
+    }
+
+    .tweet-author {
+      font-weight: bold;
+      margin-right: 5px
+    }
+
+    .tweet-handle,
+    .tweet-time {
+      color: #536471;
+      font-size: 15px;
+      margin-right: 5px
+    }
+
+    .tweet-text {
+      font-size: 15px;
+      line-height: 1.4;
+      margin-bottom: 10px
+    }
+
+    .tweet-media {
+      max-width: 100%;
+      border-radius: 15px;
+      margin-top: 10px;
+      margin-bottom: 10px
+    }
+
+    .tweet-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      color: #536471;
+      font-size: 15px
+    }
+
+    .action-item {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 5px 8px;
+      border-radius: 9999px;
+      transition: color .2s, background-color .2s
+    }
+
+    .action-item:hover {
+      color: #1DA1F2;
+      background-color: rgba(29, 161, 242, .1)
+    }
+
+    .sidebar-right {
+      width: 350px;
+      padding: 10px 15px;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto
+    }
+
+    .search-box {
+      margin-bottom: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background-color: #fff;
+      padding-bottom: 10px
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 9999px;
+      background-color: #EFF3F4;
+      color: #0F1419;
+      font-size: 15px;
+      outline: none
+    }
+
+    .search-box input::placeholder {
+      color: #536471
+    }
+
+    .widgets-container {
+      background-color: #F7F9F9;
+      border-radius: 16px;
+      margin-bottom: 15px;
+      padding: 12px 0
+    }
+
+    .widgets-container h3 {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 0 15px 10px;
+      margin-bottom: 0
+    }
+
+    .trend-item {
+      padding: 10px 15px;
+      cursor: pointer;
+      transition: background-color .2s
+    }
+
+    .trend-item:hover {
+      background-color: #E7E7E8
+    }
+
+    .trend-category {
+      color: #536471;
+      font-size: 13px
+    }
+
+    .trend-name {
+      font-weight: bold;
+      font-size: 15px;
+      margin-top: 2px
+    }
+
+    .trend-tweets {
+      color: #536471;
+      font-size: 13px;
+      margin-top: 2px
+    }
+
+    .who-to-follow-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      cursor: pointer;
+      transition: background-color .2s
+    }
+
+    .who-to-follow-item:hover {
+      background-color: #E7E7E8
+    }
+
+    .who-to-follow-item .user-avatar {
+      width: 48px;
+      height: 48px;
+      margin-right: 10px
+    }
+
+    .who-to-follow-item .user-info {
+      flex-grow: 1
+    }
+
+    .who-to-follow-item .user-name {
+      font-weight: bold;
+      font-size: 15px
+    }
+
+    .who-to-follow-item .user-handle {
+      color: #536471;
+      font-size: 15px
+    }
+
+    .follow-button {
+      background-color: #0F1419;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color .2s
+    }
+
+    .follow-button:hover {
+      background-color: #272C30
+    }
+
+    .show-more {
+      color: #1DA1F2;
+      padding: 15px;
+      text-decoration: none;
+      font-size: 15px;
+      transition: background-color .2s;
+      display: block
+    }
+
+    .show-more:hover {
+      background-color: #E7E7E8
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 15px 15px 0
+    }
+
+    .footer-links a {
+      color: #536471;
+      font-size: 13px;
+      margin-right: 12px;
+      margin-bottom: 8px;
+      text-decoration: none
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline
+    }
+
+    .footer-links span {
+      color: #536471;
+      font-size: 13px
+    }
+
+    .material-icons-outlined {
+      font-size: 24px
+    }
+
+    @media(max-width:1000px) {
+      .sidebar-left {
+        width: 80px;
+        align-items: center;
+        padding: 10px 5px
+      }
+
+      .sidebar-left .nav-text,
+      .sidebar-left .tweet-button span,
+      .sidebar-left .user-info,
+      .sidebar-left .more-icon {
+        display: none
+      }
+
+      .sidebar-left .nav-item {
+        justify-content: center;
+        padding: 12px
+      }
+
+      .sidebar-left .tweet-button {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        padding: 0
+      }
+
+      .sidebar-left .user-card {
+        padding: 10px 5px
+      }
+
+      .sidebar-left .user-avatar {
+        margin-right: 0
+      }
+
+      .sidebar-right {
+        display: none
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+
+<body>
+  <div class="app-container">
+    <div class="sidebar-left">
+      <div class="logo"><span class="material-icons-outlined" style="color: #1DA1F2;">flutter_dash</span></div>
+      <nav class="main-nav"><a href="#" class="nav-item active"><span class="material-icons-outlined icon">home</span><span class="nav-text">Home</span></a><a href="#" class="nav-item"><span class="material-icons-outlined icon">search</span><span class="nav-text">Explore</span></a><a href="#" class="nav-item"><span class="material-icons-outlined icon">notifications</span><span class="nav-text">Notifications</span></a><a href="#" class="nav-item"><span class="material-icons-outlined icon">mail_outline</span><span class="nav-text">Messages</span></a><a href="#" class="nav-item"><span class="material-icons-outlined icon">bookmark_border</span><span class="nav-text">Bookmarks</span></a><a href="#" class="nav-item"><span class="material-icons-outlined icon">list_alt</span><span class="nav-text">Lists</span></a><a href="#" class="nav-item"><span class="material-icons-outlined icon">person_outline</span><span class="nav-text">Profile</span></a><a href="#" class="nav-item"><span class="material-icons-outlined icon">more_horiz</span><span class="nav-text">More</span></a></nav><button class="tweet-button"><span>Post</span></button>
+      <div class="user-card"><img src="https://pbs.twimg.com/profile_images/1702604673620359168/vXnFw8n7_400x400.jpg" alt="User Avatar" class="user-avatar">
+        <div class="user-info">
+          <div class="user-name">User Name</div>
+          <div class="user-handle">@userhandle</div>
+        </div><span class="material-icons-outlined more-icon">more_horiz</span>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="main-header">
+        <h2>Home</h2>
+        <div class="tabs"><a href="#" class="tab active">For you</a><a href="#" class="tab">Following</a></div>
+      </div>
+      <div class="tweet-composer"><img src="https://pbs.twimg.com/profile_images/1702604673620359168/vXnFw8n7_400x400.jpg" alt="User Avatar" class="user-avatar">
+        <div class="composer-input-area"><textarea placeholder="What is happening?!" rows="1"></textarea>
+          <div class="composer-actions">
+            <div class="icons"><span class="material-icons-outlined action-icon">image</span><span class="material-icons-outlined action-icon">gif_box</span><span class="material-icons-outlined action-icon">poll</span><span class="material-icons-outlined action-icon">sentiment_satisfied</span><span class="material-icons-outlined action-icon">event</span><span class="material-icons-outlined action-icon">location_on</span></div><button class="post-button">Post</button>
+          </div>
+        </div>
+      </div>
+      <div class="tweets-feed">
+        <div class="tweet-card"><img src="https://pbs.twimg.com/profile_images/1702604673620359168/vXnFw8n7_400x400.jpg" alt="User Avatar" class="user-avatar">
+          <div class="tweet-content">
+            <div class="tweet-header"><span class="tweet-author">User Name</span><span class="tweet-handle">@userhandle</span><span class="tweet-time">· 1h</span></div>
+            <div class="tweet-text">This is a sample tweet! Building a Twitter/X clone with HTML, CSS, and JS. It's challenging but fun! #webdev #frontend #clone</div>
+            <div class="tweet-actions">
+              <div class="action-item"><span class="material-icons-outlined">chat_bubble_outline</span><span>12</span></div>
+              <div class="action-item"><span class="material-icons-outlined">repeat</span><span>5</span></div>
+              <div class="action-item"><span class="material-icons-outlined">favorite_border</span><span>23</span></div>
+              <div class="action-item"><span class="material-icons-outlined">bar_chart</span><span>56</span></div>
+              <div class="action-item"><span class="material-icons-outlined">share</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tweet-card"><img src="https://pbs.twimg.com/profile_images/1702604673620359168/vXnFw8n7_400x400.jpg" alt="User Avatar" class="user-avatar">
+          <div class="tweet-content">
+            <div class="tweet-header"><span class="tweet-author">Another User</span><span class="tweet-handle">@anotheruser</span><span class="tweet-time">· 3h</span></div>
+            <div class="tweet-text">Just finished a coding session. Feeling productive! What are you working on today?</div><img src="https://images.unsplash.com/photo-1510915228340-a1210081e62f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Code snippet" class="tweet-media">
+            <div class="tweet-actions">
+              <div class="action-item"><span class="material-icons-outlined">chat_bubble_outline</span><span>8</span></div>
+              <div class="action-item"><span class="material-icons-outlined">repeat</span><span>2</span></div>
+              <div class="action-item"><span class="material-icons-outlined">favorite_border</span><span>15</span></div>
+              <div class="action-item"><span class="material-icons-outlined">bar_chart</span><span>30</span></div>
+              <div class="action-item"><span class="material-icons-outlined">share</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-right">
+      <div class="search-box"><input type="text" placeholder="Search"></div>
+      <div class="widgets-container">
+        <h3 class="widget-title">Trends for you</h3><a href="#" class="trend-item">
+          <div class="trend-category">Trending in Tech</div>
+          <div class="trend-name">#WebDevelopment</div>
+          <div class="trend-tweets">120K Tweets</div>
+        </a><a href="#" class="trend-item">
+          <div class="trend-category">Trending in Sports</div>
+          <div class="trend-name">#NBAPlayoffs</div>
+          <div class="trend-tweets">90K Tweets</div>
+        </a><a href="#" class="trend-item">
+          <div class="trend-category">Trending</div>
+          <div class="trend-name">#FrontendFriday</div>
+          <div class="trend-tweets">50K Tweets</div>
+        </a><a href="#" class="show-more">Show more</a>
+      </div>
+      <div class="widgets-container">
+        <h3 class="widget-title">Who to follow</h3><a href="#" class="who-to-follow-item"><img src="https://pbs.twimg.com/profile_images/1702604673620359168/vXnFw8n7_400x400.jpg" alt="User Avatar" class="user-avatar">
+          <div class="user-info">
+            <div class="user-name">Coder Guy</div>
+            <div class="user-handle">@coder_guy</div>
+          </div><button class="follow-button">Follow</button>
+        </a><a href="#" class="who-to-follow-item"><img src="https://pbs.twimg.com/profile_images/1702604673620359168/vXnFw8n7_400x400.jpg" alt="User Avatar" class="user-avatar">
+          <div class="user-info">
+            <div class="user-name">Design Diva</div>
+            <div class="user-handle">@design_diva</div>
+          </div><button class="follow-button">Follow</button>
+        </a><a href="#" class="show-more">Show more</a>
+      </div>
+      <div class="footer-links"><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">Cookie Policy</a><a href="#">Accessibility</a><a href="#">Ads info</a><a href="#">More</a><span>© 2024 X Corp.</span></div>
+    </div>
+  </div>
+  <script>
+    // Basic JS for interactivity (e.g., tweet composer textarea auto-resize)document.addEventListener('DOMContentLoaded', () => {const textarea = document.querySelector('.tweet-composer textarea');if (textarea) {textarea.addEventListener('input', () => {textarea.style.height = 'auto';textarea.style.height = textarea.scrollHeight + 'px';});}});// Example of active nav item logicconst navItems = document.querySelectorAll('.main-nav .nav-item');navItems.forEach(item => {item.addEventListener('click', (event) => {navItems.forEach(nav => nav.classList.remove('active'));event.currentTarget.classList.add('active');});});});
+  </script>
+</body>
+
+</html>
